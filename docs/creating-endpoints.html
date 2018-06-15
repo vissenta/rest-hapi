@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Creating Endpoints · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Creating Endpoints · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="Creating endpoints with rest-hapi can be accomplished three different ways: "/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/JKHeadley/rest-hapi-docs/tree/master/docs/creating-endpoints.md" target="_blank" rel="noreferrer noopener">Edit</a><h1>Creating Endpoints</h1></header><article><div><span><p>Creating endpoints with rest-hapi can be accomplished three different ways:</p>
+<ul>
+<li>generating endpoints based off of <a href="#model-endpoints">model definitions</a></li>
+<li>defining <a href="#standalone-endpoints">standalone endpoints</a></li>
+<li><a href="#additional-endpoints">adding endpoints</a> to a model</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="model-endpoints"></a><a href="#model-endpoints" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Model Endpoints</h2>
+<p>Restful endpoints are automatically generated based off of any mongoose models that you add to your <code>models</code> directory with the file structure of <code>{model name}.model.js</code>.  These models must adhere to the following format:</p>
+<pre><code class="hljs css javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+    <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+        <span class="hljs-comment">/*fill in schema fields*/</span>
+    });
+
+    Schema.statics = {
+        <span class="hljs-attr">collectionName</span>: <span class="hljs-comment">/*your model name*/</span>,
+        <span class="hljs-attr">routeOptions</span>: {}
+    };
+
+    <span class="hljs-keyword">return</span> Schema;
+};
+</code></pre>
+<p>As a concrete example, here is a <code>user</code> model:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">email</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">password</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">allowOnUpdate</span>: <span class="hljs-literal">false</span>
+    }
+  });
+  
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>: modelName,
+    <span class="hljs-attr">routeOptions</span>: {}
+  };
+  
+  <span class="hljs-keyword">return</span> Schema;
+};
+</code></pre>
+<p>This will generate the following CRUD endpoints:</p>
+<pre><code class="hljs">DELETE <span class="hljs-built_in">/user </span>       Delete multiple<span class="hljs-built_in"> users
+</span>POST <span class="hljs-built_in">/user </span>         Create one <span class="hljs-keyword">or</span> more new<span class="hljs-built_in"> users
+</span><span class="hljs-builtin-name">GET</span> <span class="hljs-built_in">/user </span>          <span class="hljs-builtin-name">Get</span> a list of<span class="hljs-built_in"> users
+</span>DELETE /user/{_id}  Delete a<span class="hljs-built_in"> user
+</span><span class="hljs-builtin-name">GET</span> /user/{_id}     <span class="hljs-builtin-name">Get</span> a specific<span class="hljs-built_in"> user
+</span>PUT /user/{_id}     Update a<span class="hljs-built_in"> user
+</span></code></pre>
+<p>Association endpoints can also be generated based on model definitions, see the <a href="/rest-hapi/docs/associations.html">Associations</a> section.</p>
+<blockquote>
+<p><strong>NOTE:</strong> If your <code>models</code> directory is not in your projects root directory, you will need to specify the path (relative to your projects root directory) by assigning the path to the <a href="/rest-hapi/docs/configuration.html#modelpath"><code>config.modelPath</code></a> property and you will need to set the <a href="/rest-hapi/docs/configuration.html#absolutemodelpath"><code>config.absoluteModelPath</code></a> property to <code>true</code>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="standalone-endpoints"></a><a href="#standalone-endpoints" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Standalone endpoints</h2>
+<p>Standalone endpoints can be generated by adding files to your <code>api</code> directory. The content of these files must adhere to the following format:</p>
+<pre><code class="hljs css javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">server, mongoose, logger</span>) </span>{
+    <span class="hljs-comment">/*register hapi endpoint here*/</span>
+};
+</code></pre>
+<p>As a concrete example, here is a <code>hello-world</code> endpoint that will show in the generated swagger docs:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// api/hello.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">server, mongoose, logger</span>) </span>{
+    server.route({
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,
+      <span class="hljs-attr">path</span>: <span class="hljs-string">'/hello-world'</span>,
+      <span class="hljs-attr">config</span>: {
+        <span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">request, h</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello World"</span> },
+        <span class="hljs-attr">tags</span>: [<span class="hljs-string">'api'</span>],
+        <span class="hljs-attr">plugins</span>: {
+          <span class="hljs-string">'hapi-swagger'</span>: {}
+        }
+      }
+    })
+}
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> If your <code>api</code> directory is not in your projects root directory, you will need to specify the path (relative to your projects root directory) by assigning the path to the <a href="/rest-hapi/docs/configuration.html#apipath"><code>config.apiPath</code></a> property and you will need to set the <a href="/rest-hapi/docs/configuration.html#absoluteapipath"><code>config.absoluteApiPath</code></a> property to <code>true</code>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="additional-endpoints"></a><a href="#additional-endpoints" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional endpoints</h2>
+<p>If endpoints beyond the generated CRUD endpoints are needed for a model, they can easily be added as an item in the <code>routeOptions.extraEndpoints</code> array.  The endpoint logic should be contained within a function using the footprint: <code>function (server, model, options, logger)</code>. For example, if we wanted to add a <code>Password Update</code> endpoint to the <code>user</code> model, it could look like this:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<span class="hljs-keyword">let</span> Joi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'joi'</span>)
+<span class="hljs-keyword">let</span> bcrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bcrypt'</span>)
+<span class="hljs-keyword">let</span> restHapi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rest-hapi'</span>)
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">email</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">password</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">allowOnUpdate</span>: <span class="hljs-literal">false</span>
+    }
+  })
+
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">extraEndpoints</span>: [
+        <span class="hljs-comment">// Password Update Endpoint</span>
+        <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">server, model, options, logger</span>) </span>{
+          <span class="hljs-keyword">const</span> Log = logger.bind(<span class="hljs-string">"Password Update"</span>)
+          <span class="hljs-keyword">let</span> Boom = <span class="hljs-built_in">require</span>(<span class="hljs-string">'boom'</span>)
+
+          <span class="hljs-keyword">let</span> collectionName = model.collectionDisplayName || model.modelName
+
+          Log.note(<span class="hljs-string">"Generating Password Update endpoint for "</span> + collectionName)
+
+          <span class="hljs-keyword">let</span> handler = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">request, h</span>) </span>{
+            <span class="hljs-keyword">try</span> {
+              <span class="hljs-keyword">let</span> hashedPassword = model.generatePasswordHash(request.payload.password)
+              <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> restHapi.update(model, request.params._id, {<span class="hljs-attr">password</span>: hashedPassword}, Log)
+              <span class="hljs-keyword">if</span> (result) {
+                <span class="hljs-keyword">return</span> h.response(<span class="hljs-string">"Password updated."</span>).code(<span class="hljs-number">200</span>)
+              }
+              <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">throw</span> Boom.notFound(<span class="hljs-string">"No resource was found with that id."</span>)
+              }
+            } <span class="hljs-keyword">catch</span>(err) {
+              <span class="hljs-keyword">if</span> (!err.isBoom) {
+                Log.error(err)
+                <span class="hljs-keyword">throw</span> Boom.badImplementation(err)
+              } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">throw</span> err
+              }
+            }
+          }
+
+          server.route({
+            <span class="hljs-attr">method</span>: <span class="hljs-string">'PUT'</span>,
+            <span class="hljs-attr">path</span>: <span class="hljs-string">'/user/{_id}/password'</span>,
+            <span class="hljs-attr">config</span>: {
+              <span class="hljs-attr">handler</span>: handler,
+              <span class="hljs-attr">auth</span>: <span class="hljs-literal">null</span>,
+              <span class="hljs-attr">description</span>: <span class="hljs-string">'Update a user\'s password.'</span>,
+              <span class="hljs-attr">tags</span>: [<span class="hljs-string">'api'</span>, <span class="hljs-string">'User'</span>, <span class="hljs-string">'Password'</span>],
+              <span class="hljs-attr">validate</span>: {
+                <span class="hljs-attr">params</span>: {
+                  <span class="hljs-attr">_id</span>: Joi.objectId().required()
+                },
+                <span class="hljs-attr">payload</span>: {
+                  <span class="hljs-attr">password</span>: Joi.string().required()
+                    .description(<span class="hljs-string">'The user\'s new password'</span>)
+                }
+              },
+              <span class="hljs-attr">plugins</span>: {
+                <span class="hljs-string">'hapi-swagger'</span>: {
+                  <span class="hljs-attr">responseMessages</span>: [
+                    {<span class="hljs-attr">code</span>: <span class="hljs-number">200</span>, <span class="hljs-attr">message</span>: <span class="hljs-string">'Success'</span>},
+                    {<span class="hljs-attr">code</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">message</span>: <span class="hljs-string">'Bad Request'</span>},
+                    {<span class="hljs-attr">code</span>: <span class="hljs-number">404</span>, <span class="hljs-attr">message</span>: <span class="hljs-string">'Not Found'</span>},
+                    {<span class="hljs-attr">code</span>: <span class="hljs-number">500</span>, <span class="hljs-attr">message</span>: <span class="hljs-string">'Internal Server Error'</span>}
+                  ]
+                }
+              }
+            }
+          })
+        }
+      ]
+    },
+
+    <span class="hljs-attr">generatePasswordHash</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">password</span>) </span>{
+      <span class="hljs-keyword">let</span> salt = bcrypt.genSaltSync(<span class="hljs-number">10</span>)
+      <span class="hljs-keyword">let</span> hash = bcrypt.hashSync(password, salt)
+      <span class="hljs-keyword">return</span> hash
+    }
+  }
+
+  <span class="hljs-keyword">return</span> Schema
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="configuration.html">← Configuration</a><a class="docs-next button" href="associations.html">Associations →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#model-endpoints">Model Endpoints</a></li><li><a href="#standalone-endpoints">Standalone endpoints</a></li><li><a href="#additional-endpoints">Additional endpoints</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>

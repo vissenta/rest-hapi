@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Validation · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Validation · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="## Route validation"/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/JKHeadley/rest-hapi-docs/tree/master/docs/validation.md" target="_blank" rel="noreferrer noopener">Edit</a><h1>Validation</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="route-validation"></a><a href="#route-validation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Route validation</h2>
+<p>Validation in the rest-hapi framework is implemented with <a href="https://github.com/hapijs/joi">joi</a>. This includes validation of headers, query parameters, payloads, and responses. joi validation models are based primarily off of each model's field properties.  Below is a list of mongoose schema types and their joi equivalent within rest-hapi:</p>
+<table>
+<thead>
+<tr><th>Schema Type</th><th>joi Validation</th></tr>
+</thead>
+<tbody>
+<tr><td>ObjectId</td><td>Joi.objectId() (via <a href="https://www.npmjs.com/package/joi-objectid">joi-objectid</a>)</td></tr>
+<tr><td>Boolean</td><td>Joi.bool()</td></tr>
+<tr><td>Number</td><td>Joi.number()</td></tr>
+<tr><td>Date</td><td>Joi.date()</td></tr>
+<tr><td>String</td><td>Joi.string()</td></tr>
+<tr><td>types</td><td>Joi.any()</td></tr>
+</tbody>
+</table>
+<p>Fields of type <code>String</code> can include further validation restrictions based on additional field properties as shown below:</p>
+<table>
+<thead>
+<tr><th>Field Property</th><th>joi Validation</th></tr>
+</thead>
+<tbody>
+<tr><td>enum: [items]</td><td>Joi.any().only([items])</td></tr>
+<tr><td>regex: RegExp</td><td>Joi.string().regex(RegExp)</td></tr>
+<tr><td>stringType: 'email'</td><td>Joi.string().email()</td></tr>
+<tr><td>stringType: 'uri'</td><td>Joi.string().uri()</td></tr>
+<tr><td>stringType: 'token'</td><td>Joi.string().token()</td></tr>
+<tr><td>stringType: 'base64'</td><td>Joi.string().base64()</td></tr>
+<tr><td>stringType: 'lowercase'</td><td>Joi.string().lowercase()</td></tr>
+<tr><td>stringType: 'uppercase'</td><td>Joi.string().uppercase()</td></tr>
+<tr><td>stringType: 'hostname'</td><td>Joi.string().hostname()</td></tr>
+<tr><td>stringType: 'hex'</td><td>Joi.string().hex()</td></tr>
+<tr><td>stringType: 'trim'</td><td>Joi.string().trim()</td></tr>
+<tr><td>stringType: 'creditCard'</td><td>Joi.string().creditCard()</td></tr>
+</tbody>
+</table>
+<p>In addition, if a <code>description: &quot;Description text.&quot;</code> field property is included, then <code>.description(&quot;Description text.&quot;)</code> will be called on the joi validation object.</p>
+<p>Furthermore, the regex field can also accept an object that follows the formatting below. See <a href="https://github.com/hapijs/joi/blob/v13.0.2/API.md#stringregexpattern-name--options">Joi regex options</a>.</p>
+<pre><code class="hljs css javascript">{
+ <span class="hljs-attr">pattern</span>: <span class="hljs-built_in">RegExp</span>,
+ <span class="hljs-attr">options</span>: {
+  <span class="hljs-attr">invert</span>: <span class="hljs-built_in">Boolean</span>
+ }
+}
+</code></pre>
+<p>rest-hapi generates joi validation models for create, read, and update events as well as association events with linking models.  By default these validation models include all the fields of the mongoose models and list them as optional.  However additional field properties can be included to customize the validation models.  Below is a list of currently supported field properties and their effect on the validation models.</p>
+<table>
+<thead>
+<tr><th>Field Property</th><th>Validation Model</th></tr>
+</thead>
+<tbody>
+<tr><td>required: true</td><td>field required on create</td></tr>
+<tr><td>requireOnRead: true</td><td>field required on read/response</td></tr>
+<tr><td>requireOnUpdate: true</td><td>field required on update</td></tr>
+<tr><td>allowOnRead: false</td><td>field excluded from read model</td></tr>
+<tr><td>allowOnUpdate: false</td><td>field excluded from update model</td></tr>
+<tr><td>allowOnCreate: false</td><td>field excluded from create model</td></tr>
+<tr><td>queryable: false</td><td>field cannot be included as a query parameter</td></tr>
+<tr><td>exclude: true</td><td>field cannot be included in a response or as part of a query</td></tr>
+<tr><td>allowNull: true</td><td>field accepts <code>null</code> as a valid value</td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="joi-helper-methods"></a><a href="#joi-helper-methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Joi Helper Methods</h2>
+<p>rest-hapi exposes the helper methods it uses to generate Joi models through the <code>joiHelper</code> property. Combined with the exposed <a href="/rest-hapi/docs/mongoose-wrapper-methods.html">mongoose wrapper methods</a>, this allows you to easily create <a href="/rest-hapi/docs/creating-endpoints.html#standalone-endpoints">custom endpoints</a>. You can see a description of these methods below:</p>
+<h3><a class="anchor" aria-hidden="true" id="generatejoireadmodel"></a><a href="#generatejoireadmodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiReadModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object that validates a query result for a specific model
+ * @param model: A mongoose model object.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiReadModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, Log</span>) </span>{...};
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoiupdatemodel"></a><a href="#generatejoiupdatemodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiUpdateModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object that validates a query request payload for updating a document
+ * @param model: A mongoose model object.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiUpdateModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoicreatemodel"></a><a href="#generatejoicreatemodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiCreateModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object that validates a request payload for creating a document
+ * @param model: A mongoose model object.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiCreateModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoilistquerymodel"></a><a href="#generatejoilistquerymodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiListQueryModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object that validates a request query for the list function
+ * @param model: A mongoose model object.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiListQueryModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoifindquerymodel"></a><a href="#generatejoifindquerymodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiFindQueryModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object that validates a request query for the find function
+ * @param model: A mongoose model object.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiFindQueryModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoifieldmodel"></a><a href="#generatejoifieldmodel" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiFieldModel</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Generates a Joi object for a model field
+ * @param model: A mongoose model object
+ * @param field: A model field
+ * @param fieldName: The name of the field
+ * @param modelType: The type of CRUD model being generated
+ * @param Log: A logging object
+ * @returns {*}: A Joi object
+ */</span>
+generateJoiFieldModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">model, field, fieldName, modelType, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="generatejoimodelfromfieldtype"></a><a href="#generatejoimodelfromfieldtype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>generateJoiModelFromFieldType</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Returns a Joi object based on the mongoose field type.
+ * @param field: A field from a mongoose model.
+ * @param Log: A logging object.
+ * @returns {*}: A Joi object.
+ */</span>
+generateJoiModelFromFieldType = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">field, Log</span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="joiobjectid"></a><a href="#joiobjectid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>joiObjectId</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Provides easy access to the Joi ObjectId type.
+ * @returns {*|{type}}
+ */</span>
+joiObjectId = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{...};
+
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isvalidfield"></a><a href="#isvalidfield" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isValidField</h3>
+<pre><code class="hljs css javascript"><span class="hljs-comment">/**
+ * Checks to see if a field is a valid model property
+ * @param fieldName: The name of the field
+ * @param field: The field being checked
+ * @param model: A mongoose model object
+ * @returns {boolean}
+ */</span>
+isValidField = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fieldName, field, model</span>) </span>{...};
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="duplicate-fields.html">← Duplicate Fields</a><a class="docs-next button" href="middleware.html">Middleware →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#route-validation">Route validation</a></li><li><a href="#joi-helper-methods">Joi Helper Methods</a><ul class="toc-headings"><li><a href="#generatejoireadmodel">generateJoiReadModel</a></li><li><a href="#generatejoiupdatemodel">generateJoiUpdateModel</a></li><li><a href="#generatejoicreatemodel">generateJoiCreateModel</a></li><li><a href="#generatejoilistquerymodel">generateJoiListQueryModel</a></li><li><a href="#generatejoifindquerymodel">generateJoiFindQueryModel</a></li><li><a href="#generatejoifieldmodel">generateJoiFieldModel</a></li><li><a href="#generatejoimodelfromfieldtype">generateJoiModelFromFieldType</a></li><li><a href="#joiobjectid">joiObjectId</a></li><li><a href="#isvalidfield">isValidField</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>

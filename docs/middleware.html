@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Middleware · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Middleware · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="## CRUD"/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/JKHeadley/rest-hapi-docs/tree/master/docs/middleware.md" target="_blank" rel="noreferrer noopener">Edit</a><h1>Middleware</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="crud"></a><a href="#crud" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CRUD</h2>
+<p>Models can support middleware functions for CRUD operations. These exist under the <code>routeOptions</code> object. The following middleware functions are available:</p>
+<ul>
+<li>list:
+<ul>
+<li>pre(query, request, Log)
+<ul>
+<li>returns: <code>query</code></li>
+</ul></li>
+<li>post(request, result, Log)
+<ul>
+<li>returns: <code>result</code></li>
+</ul></li>
+</ul></li>
+<li>find:
+<ul>
+<li>pre(_id, query, request, Log)
+<ul>
+<li>returns: <code>query</code></li>
+</ul></li>
+<li>post(request, result, Log)
+<ul>
+<li>returns: <code>result</code></li>
+</ul></li>
+</ul></li>
+<li>create:
+<ul>
+<li>pre(payload, request, Log)
+<ul>
+<li><blockquote>
+<p><strong>NOTE:</strong> <em>For payloads with multiple documents, the pre function will be called for each document individually (passed in through the <code>payload</code> parameter) i.e. <code>request.payload</code> = array of documents, <code>payload</code> = single document</em></p>
+</blockquote></li>
+<li><p>returns: <code>payload</code></p></li>
+</ul></li>
+<li>post(document, request, result, Log)
+<ul>
+<li>returns: <code>document</code></li>
+</ul></li>
+</ul></li>
+<li>update:
+<ul>
+<li>pre(_id, payload, request, Log)
+<ul>
+<li>returns: <code>payload</code></li>
+</ul></li>
+<li>post(request, result, Log)
+<ul>
+<li>returns: <code>result</code></li>
+</ul></li>
+</ul></li>
+<li>delete:
+<ul>
+<li>pre(_id, hardDelete, request, Log)
+<ul>
+<li>returns: <code>null</code></li>
+</ul></li>
+<li>post(hardDelete, deleted, request, Log)
+<ul>
+<li>returns: <code>null</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>For example, a <code>create: pre</code> function can be defined to encrypt a users password
+using a static method <code>generatePasswordHash</code>.</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<span class="hljs-keyword">let</span> bcrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bcrypt'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">email</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">password</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">allowOnUpdate</span>: <span class="hljs-literal">false</span>
+    }
+  });
+
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">create</span>: {
+        <span class="hljs-attr">pre</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">payload, request, Log</span>) </span>{
+          <span class="hljs-keyword">let</span> hashedPassword = mongoose.model(<span class="hljs-string">'user'</span>).generatePasswordHash(payload.password);
+
+          payload.password = hashedPassword;
+          
+          <span class="hljs-keyword">return</span> payload;
+        }
+      }
+    },
+
+    <span class="hljs-attr">generatePasswordHash</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">password</span>) </span>{
+      <span class="hljs-keyword">let</span> salt = bcrypt.genSaltSync(<span class="hljs-number">10</span>);
+      <span class="hljs-keyword">let</span> hash = bcrypt.hashSync(password, salt);
+      <span class="hljs-keyword">return</span> hash;
+    }
+  };
+
+  <span class="hljs-keyword">return</span> Schema;
+};
+</code></pre>
+<p>If a <code>Boom</code> error is thrown within a middleware function, that error will become the server response.  Ex:</p>
+<pre><code class="hljs css javascript">      create: {
+        <span class="hljs-attr">pre</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">payload, request, Log</span>) </span>{
+          <span class="hljs-keyword">throw</span> Boom.badRequest(<span class="hljs-string">"TEST ERROR"</span>)
+        }
+      }
+</code></pre>
+<p>will result in a response body of:</p>
+<pre><code class="hljs css javascript">{
+  <span class="hljs-string">"statusCode"</span>: <span class="hljs-number">400</span>,
+  <span class="hljs-string">"error"</span>: <span class="hljs-string">"Bad Request"</span>,
+  <span class="hljs-string">"message"</span>: <span class="hljs-string">"TEST ERROR"</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="association"></a><a href="#association" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Association</h2>
+<p>Support is being added for association middlware. Currently the following association middleware exist:</p>
+<ul>
+<li>getAll:
+<ul>
+<li>post(request, result, Log)
+<ul>
+<li>returns: result</li>
+</ul></li>
+</ul></li>
+<li>add:
+<ul>
+<li>pre(payload, request, Log)
+<ul>
+<li>returns: payload</li>
+</ul></li>
+</ul></li>
+<li>remove:
+<ul>
+<li>pre(payload, request, Log)
+<ul>
+<li>returns: payload</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Association middleware is defined similar to CRUD middleware, with the only difference being the association name must be specified.  See below for an example:</p>
+<pre><code class="hljs css javascript">        routeOptions: {
+          <span class="hljs-attr">associations</span>: {
+            <span class="hljs-attr">groups</span>: {
+              <span class="hljs-attr">type</span>: <span class="hljs-string">"MANY_MANY"</span>,
+              <span class="hljs-attr">model</span>: <span class="hljs-string">"group"</span>
+            }
+          }
+        },
+        <span class="hljs-attr">getAll</span>: {
+          <span class="hljs-attr">groups</span>: {                                 <span class="hljs-comment">//&lt;---this must match the association name</span>
+            post: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">request, result, Log</span>) </span>{
+              <span class="hljs-comment">/** modify and return result **/</span>
+            }
+          }
+        }
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="validation.html">← Validation</a><a class="docs-next button" href="authorization.html">Authorization →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#crud">CRUD</a></li><li><a href="#association">Association</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>

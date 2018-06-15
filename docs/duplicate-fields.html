@@ -1,0 +1,339 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Duplicate Fields · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Duplicate Fields · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="&quot;Duplicate fields&quot; is a rest-hapi feature that allows fields from an associated document to exist in the parent document while maintaining the original field value. This can be accomplished by setting [`config.enableDuplicateFields`](/rest-hapi/docs/configuration.html#enableduplicatefields) to `true` and adding the `duplicate` property to an association definition. "/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/JKHeadley/rest-hapi-docs/tree/master/docs/duplicate-fields.md" target="_blank" rel="noreferrer noopener">Edit</a><h1>Duplicate Fields</h1></header><article><div><span><p>&quot;Duplicate fields&quot; is a rest-hapi feature that allows fields from an associated document to exist in the parent document while maintaining the original field value. This can be accomplished by setting <a href="/rest-hapi/docs/configuration.html#enableduplicatefields"><code>config.enableDuplicateFields</code></a> to <code>true</code> and adding the <code>duplicate</code> property to an association definition.</p>
+<h2><a class="anchor" aria-hidden="true" id="basic-example"></a><a href="#basic-example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic example</h2>
+<p>In the code below, the <code>name</code> field of the role model will be duplicated in the user model:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/role.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"role"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">description</span>: {
+      <span class="hljs-attr">type</span>: Types.String
+    }
+  }, { <span class="hljs-attr">collection</span>: modelName });
+    
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">associations</span>: {
+        <span class="hljs-attr">users</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"ONE_MANY"</span>,
+          <span class="hljs-attr">alias</span>: <span class="hljs-string">"user"</span>,
+          <span class="hljs-attr">foreignField</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"user"</span>
+        }
+      }
+    }
+  };
+
+  <span class="hljs-keyword">return</span> Schema;
+};
+
+</code></pre>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">email</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">role</span>: {
+      <span class="hljs-attr">type</span>: Types.ObjectId,
+      <span class="hljs-attr">ref</span>: <span class="hljs-string">"role"</span>
+    }
+  }, { <span class="hljs-attr">collection</span>: modelName });
+  
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">associations</span>: {
+        <span class="hljs-attr">role</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"MANY_ONE"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">duplicate</span>: [<span class="hljs-string">'name'</span>]                &lt;--- list duplicate fields
+        }
+      }
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> Schema;
+};
+
+</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> Only associations of type <code>MANY_ONE</code> and <code>ONE_ONE</code> can have the <code>duplicate</code> property.</p>
+</blockquote>
+<p>Given these model definitions, lets say we have the following role documents:</p>
+<pre><code class="hljs css javascript">    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56a"</span>,
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"User"</span>,
+      <span class="hljs-string">"description"</span>: <span class="hljs-string">"A standard user account."</span>
+    },
+    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"Admin"</span>,
+      <span class="hljs-string">"description"</span>: <span class="hljs-string">"A user with advanced permissions."</span>
+    },
+</code></pre>
+<p>Now lets create a user document and assign it to the <code>User</code> role with the following payload:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56a"</span>
+   }
+</code></pre>
+<p>Finally, when we retrieve the user document with a GET, we should recieve an object similar to the one below:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56c"</span>
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56a"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"User"</span>
+   }
+</code></pre>
+<p>Note that we did not have to manually embed the <code>roleName</code> property.  It was automatically populated when the user was created due to the <code>duplicate</code> property in the user-role association definition.</p>
+<p>Lets say we decide to promote the user to the <code>Admin</code> role by updating the user document with the following payload:</p>
+<pre><code class="hljs css javascript">   {
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>
+   }
+</code></pre>
+<p>Now when we retrieve the user document, we will see:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56c"</span>
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"Admin"</span>
+   }
+</code></pre>
+<p>The <code>roleName</code> duplicate field was automatically updated to reflect the association change!</p>
+<h1><a class="anchor" aria-hidden="true" id="tracking-duplicated-fields"></a><a href="#tracking-duplicated-fields" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tracking duplicated fields</h1>
+<p>In the above example, we showed how the <code>roleName</code> duplicate field could automatically update when the user's <code>role</code> property changed. However what if the associated role document's <code>name</code> property was updated? By default, the user's <code>roleName</code> property will remain the same even if the original field value changes. However, by setting <a href="/rest-hapi/docs/configuration.html#trackduplicatedfields"><code>config.trackDuplicatedFields</code></a> to <code>true</code>, rest-hapi will track changes from the original field and update <strong><em>ALL</em></strong> associated duplicate fields. For example, if we have the following user documents:</p>
+<pre><code class="hljs css javascript">    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56d"</span>,
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@admin1.com"</span>,
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"Admin"</span>
+    },
+    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56e"</span>,
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@admin2.com"</span>,
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"Admin"</span>
+    }
+</code></pre>
+<p>and we update the associated role document to be:</p>
+<pre><code class="hljs css javascript">    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"SuperUser"</span>,
+      <span class="hljs-string">"description"</span>: <span class="hljs-string">"A user with advanced permissions."</span>
+    }
+</code></pre>
+<p>if <a href="/rest-hapi/docs/configuration.html#trackduplicatedfields"><code>config.trackDuplicatedFields</code></a> is set to <code>true</code>, then the user documents will now look like:</p>
+<pre><code class="hljs css javascript">    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56d"</span>,
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@admin1.com"</span>,
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"SuperUser"</span>
+    },
+    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56e"</span>,
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@admin2.com"</span>,
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"SuperUser"</span>
+    }
+</code></pre>
+<p>This of course can be very useful, as all duplicated fields will stay up-to-date regardless of which end is updated. However this can also be resource intensive if not planned carefully. For instance, if 1 million user docs are associated with the <code>Admin</code> role, then 1 million extra documents will be updated whenever the <code>name</code> field of the role document is updated.</p>
+<h2><a class="anchor" aria-hidden="true" id="custom-field-name"></a><a href="#custom-field-name" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom field name</h2>
+<p>As shown in the example above, duplicate field names have a default form of [association name] + [original field name] (Ex: <code>roleName</code>).  If we want to customize the duplicate field name, we can assign an array of objects to the <code>duplicate</code> property rather than an array of strings.  For example, given the user model's association definition below:</p>
+<pre><code class="hljs css javascript">      associations: {
+        <span class="hljs-attr">role</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"MANY_ONE"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">duplicate</span>: [{
+            <span class="hljs-attr">field</span>: <span class="hljs-string">'name'</span>,
+            <span class="hljs-keyword">as</span><span class="hljs-string">' title'</span>
+          }]
+        }
+      }
+</code></pre>
+<p>the user object from the previous example would have the form:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56e"</span>,
+      <span class="hljs-string">"title"</span>: <span class="hljs-string">"User"</span>
+   }
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="nested-duplicate-fields"></a><a href="#nested-duplicate-fields" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Nested duplicate fields</h2>
+<p>One interesting property of duplicate fields is that they themselves can be duplicating a duplicate field. For an example, consider the <code>user</code>, <code>role</code>, and <code>business</code> models below:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/business.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"business"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">description</span>: {
+      <span class="hljs-attr">type</span>: Types.String
+    }
+  }, { <span class="hljs-attr">collection</span>: modelName });
+    
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">associations</span>: {
+        <span class="hljs-attr">roles</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"ONE_MANY"</span>,
+          <span class="hljs-attr">alias</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">foreignField</span>: <span class="hljs-string">"business"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"role"</span>
+        }
+      }
+    }
+  };
+
+  <span class="hljs-keyword">return</span> Schema;
+};
+
+</code></pre>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/role.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"role"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">name</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">description</span>: {
+      <span class="hljs-attr">type</span>: Types.String
+    },
+    <span class="hljs-attr">business</span>: {
+      <span class="hljs-attr">type</span>: Types.ObjectId,
+      <span class="hljs-attr">ref</span>: <span class="hljs-string">"business"</span>
+    },
+    <span class="hljs-attr">businessName</span>: {
+      <span class="hljs-attr">type</span>: Types.String
+    }
+  }, { <span class="hljs-attr">collection</span>: modelName });
+    
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">associations</span>: {
+        <span class="hljs-attr">business</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"MANY_ONE"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"business"</span>,
+          <span class="hljs-attr">duplicate</span>: <span class="hljs-string">'name'</span>
+        },
+        <span class="hljs-attr">users</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"ONE_MANY"</span>,
+          <span class="hljs-attr">alias</span>: <span class="hljs-string">"user"</span>,
+          <span class="hljs-attr">foreignField</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"user"</span>
+        }
+      }
+    }
+  };
+
+  <span class="hljs-keyword">return</span> Schema;
+};
+
+</code></pre>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+  <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
+  <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
+  <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
+    <span class="hljs-attr">email</span>: {
+      <span class="hljs-attr">type</span>: Types.String,
+      <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">role</span>: {
+      <span class="hljs-attr">type</span>: Types.ObjectId,
+      <span class="hljs-attr">ref</span>: <span class="hljs-string">"role"</span>
+    }
+  }, { <span class="hljs-attr">collection</span>: modelName });
+  
+  Schema.statics = {
+    <span class="hljs-attr">collectionName</span>:modelName,
+    <span class="hljs-attr">routeOptions</span>: {
+      <span class="hljs-attr">associations</span>: {
+        <span class="hljs-attr">role</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">"MANY_ONE"</span>,
+          <span class="hljs-attr">model</span>: <span class="hljs-string">"role"</span>,
+          <span class="hljs-attr">duplicate</span>: [{
+            <span class="hljs-attr">field</span>: <span class="hljs-string">'name'</span>
+          },{
+            <span class="hljs-attr">field</span>: <span class="hljs-string">'businessName'</span>,
+            <span class="hljs-attr">as</span>: <span class="hljs-string">'company'</span>
+          }]
+        }
+      }
+    }
+  };
+  
+  <span class="hljs-keyword">return</span> Schema;
+};
+</code></pre>
+<p>Given the relationships between these models, a set of associated documents might look like this:</p>
+<p><code>business document</code>:</p>
+<pre><code class="hljs css javascript">    {
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b57a"</span>,
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"Test Business"</span>,
+      <span class="hljs-string">"about"</span>: <span class="hljs-string">"A business for testing."</span>
+    }
+</code></pre>
+<p><code>role document</code>:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b57b"</span>
+      <span class="hljs-string">"name"</span>: <span class="hljs-string">"User"</span>, 
+      <span class="hljs-string">"business"</span>: <span class="hljs-string">"59efe15e20905150d340b57a"</span>,
+      <span class="hljs-string">"businessName"</span>: <span class="hljs-string">"Test Business"</span>,
+      <span class="hljs-string">"description"</span>: <span class="hljs-string">"A standard user account."</span>,
+   }
+</code></pre>
+<p><code>user document</code>:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56c"</span>
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b57b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"User"</span>,
+      <span class="hljs-string">"company"</span>: <span class="hljs-string">"Test Business"</span>
+   }
+</code></pre>
+<p>As you can see, the value for the user document's duplicate field <code>company</code> can be traced back to the <code>name</code> field for the business document. If <a href="/rest-hapi/docs/configuration.html#trackduplicatedfields"><code>config.trackDuplicatedFields</code></a> is set to <code>true</code>, then updating the original <code>name</code> field will cause both the role's <code>businessName</code> field and the user's <code>company</code> fields to update as well.</p>
+<blockquote>
+<p><strong>NOTE:</strong> If a duplicate field references another duplicate field, then the referenced field must exist in the model schema.  See the <code>businessName</code> field of the <code>role</code> model above.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="advantages"></a><a href="#advantages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advantages</h2>
+<p>The duplicate fields feature may seem trivial or redundant considering the same information can be included in a GET request using the <a href="/rest-hapi/docs/querying.html#populate-nested-associations">$embed</a> query parameter, however duplicate fields come with some powerful advantages. Probably the most clear advantage is the potential for improving the readability of a document. In situations where querying for the association is not ideal or possible (Ex: observing the document within MongoDB), it is much easier to discern information about the document. For example:</p>
+<p><code>doc1</code>:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56c"</span>
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>
+   }
+</code></pre>
+<p>vs</p>
+<p><code>doc2</code>:</p>
+<pre><code class="hljs css javascript">   { 
+      <span class="hljs-string">"_id"</span>: <span class="hljs-string">"59efe15e20905150d340b56c"</span>
+      <span class="hljs-string">"email"</span>: <span class="hljs-string">"test@user.com"</span>, 
+      <span class="hljs-string">"role"</span>: <span class="hljs-string">"59efe15e20905150d340b56b"</span>,
+      <span class="hljs-string">"roleName"</span>: <span class="hljs-string">"Admin"</span>
+   }
+</code></pre>
+<p>In the second object it is immediately obvious which role the user is associated with.</p>
+<p>While this is useful, arguably the biggest advantage duplicate fields provide is the improved querying. For example, in <code>doc1</code> above, the document can be filtered by the role _id (Ex: GET /user?role=59efe15e20905150d340b56b ), but thats as far as it goes when it comes to querying users based on their role information.  However with <code>doc2</code>, the user can be filtered by its role name (Ex: GET /user?roleName=Admin ) sorted by its role name (Ex: GET /user?$sort=roleName ), or even be text searchable by its role name (Ex: GET /user?$term=Admin ).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="querying.html">← Querying</a><a class="docs-next button" href="validation.html">Validation →</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#basic-example">Basic example</a></li><li><a href="#custom-field-name">Custom field name</a></li><li><a href="#nested-duplicate-fields">Nested duplicate fields</a></li><li><a href="#advantages">Advantages</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>

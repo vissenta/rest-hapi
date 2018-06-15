@@ -1,9 +1,32 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>The Problem With MongoDB · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="The Problem With MongoDB · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html"/><meta property="og:description" content="&gt; Original post can be found [here on Medium](https://hackernoon.com/the-problem-with-mongodb-d255e897b4b)"/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class="siteNavGroupActive"><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Recent Posts</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Recent Posts</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html">The Problem With MongoDB</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html">The Problem With APIs</a></li></ul></div></div></section></div><script>
-          var toggler = document.getElementById('navToggler');
-          var nav = document.getElementById('docsNav');
-          toggler.onclick = function() {
-            nav.classList.toggle('docsSliderActive');
-          };
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>The Problem With MongoDB · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&gt; Original post can be found [here on Medium](https://hackernoon.com/the-problem-with-mongodb-d255e897b4b)"/><meta property="og:title" content="The Problem With MongoDB · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html"/><meta property="og:description" content="&gt; Original post can be found [here on Medium](https://hackernoon.com/the-problem-with-mongodb-d255e897b4b)"/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/rest-hapi/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/rest-hapi/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener("DOMContentLoaded", function(){
+          addBackToTop(
+            {"zIndex":1000}
+          )
+        });
+        </script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class="siteNavGroupActive"><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Recent Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Recent Posts</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html">The Problem With MongoDB</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html">The Problem With APIs</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
         </script></nav></div><div class="container mainContainer documentContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1><a href="/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html">The Problem With MongoDB</a></h1><p class="post-meta">February 17, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/JKHeadley" target="_blank" rel="noreferrer noopener">Justin Headley</a></p><div class="authorPhoto"><a href="http://twitter.com/JKHeadley" target="_blank" rel="noreferrer noopener"><img src="https://graph.facebook.com/27403843/picture/?height=200&amp;width=200" alt="Justin Headley"/></a></div></div></header><div><span><blockquote>
 <p>Original post can be found <a href="https://hackernoon.com/the-problem-with-mongodb-d255e897b4b">here on Medium</a></p>
 </blockquote>
@@ -22,7 +45,7 @@ Note: if you feel like you are already familiar with this topic, or just want a 
 <h2><a class="anchor" aria-hidden="true" id="method-1-embedding-documents-https-docsmongodbcom-v30-tutorial-model-embedded-one-to-many-relationships-between-documents"></a><a href="#method-1-embedding-documents-https-docsmongodbcom-v30-tutorial-model-embedded-one-to-many-relationships-between-documents" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Method 1: <a href="https://docs.mongodb.com/v3.0/tutorial/model-embedded-one-to-many-relationships-between-documents/">Embedding Documents</a></h2>
 <p>The most natural method for relating data (represented as <a href="https://docs.mongodb.com/v3.0/reference/glossary/#term-document">documents</a> in MongoDB is to embed them in one another. The advantage to this approach is that all the related data can be retrieved with just one query. This is very efficient and seems good at first. Sometimes this can be an appropriate approach, but relying on embedded relationships can come at a high cost down the road. Consider an example with users and roles, where users can belong to one role and roles can have many users. In this case we can either choose to embed user documents inside role documents, or vice versa. If we decide that users are the most important entity and that roles should be embedded within them, then we could end up with data that looks like this:</p>
 <p><code>Users:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">1234</span>,
       <span class="hljs-attr">email</span>: <span class="hljs-string">'bob@admin.com'</span>,
@@ -44,7 +67,7 @@ Note: if you feel like you are already familiar with this topic, or just want a 
 <p>The problem with his approach arises when we want to change the details of a role. If we update say, the description of the role for the first user, the role description for the second user stays the same. This is a problem if we want to stay consistent, which we almost always do. It may not seem like a big issue with only two users, but what about when there are hundreds of users? Finding and updating every embedded role does not sound fun.
 Realizing this, we may choose to embed users inside roles instead. This could result in data like so:</p>
 <p><code>Roles:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">5678</span>,
       <span class="hljs-attr">name</span>: <span class="hljs-string">'Admin'</span>,
@@ -64,7 +87,7 @@ Realizing this, we may choose to embed users inside roles instead. This could re
 <h2><a class="anchor" aria-hidden="true" id="method-2-document-references-https-docsmongodbcom-v30-tutorial-model-referenced-one-to-many-relationships-between-documents"></a><a href="#method-2-document-references-https-docsmongodbcom-v30-tutorial-model-referenced-one-to-many-relationships-between-documents" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Method 2: <a href="https://docs.mongodb.com/v3.0/tutorial/model-referenced-one-to-many-relationships-between-documents/">Document References</a></h2>
 <p>Rather than embedding documents inside one another, we can give each document an id and store related document ids rather than the whole document. Lets look at the data from the previous example represented this way:</p>
 <p><code>Users:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">1234</span>,
       <span class="hljs-attr">email</span>: <span class="hljs-string">'bob@admin.com'</span>,
@@ -78,7 +101,7 @@ Realizing this, we may choose to embed users inside roles instead. This could re
 ]
 </code></pre>
 <p><code>Roles:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">5678</span>,
       <span class="hljs-attr">name</span>: <span class="hljs-string">'Admin'</span>,
@@ -92,7 +115,7 @@ Realizing this, we may choose to embed users inside roles instead. This could re
 </code></pre>
 <p>Now whenever a document is updated, no other actions are needed because the reference ids don't change. Consistency problem solved! However there is a tradeoff. In Method 1 only one query was needed to grab all the data related to a user (or a role). Now in order to get the data for a role AND its associated users, we must first perform a query for the role and then perform another query to look up the users based on the ids. This may not seem that bad, but it can quickly get out of hand as well. Lets bring in the teams entity and look at our data again:</p>
 <p><code>Users:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">1234</span>,
       <span class="hljs-attr">email</span>: <span class="hljs-string">'bob@admin.com'</span>,
@@ -106,7 +129,7 @@ Realizing this, we may choose to embed users inside roles instead. This could re
 ]
 </code></pre>
 <p><code>Roles:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">5678</span>,
       <span class="hljs-attr">name</span>: <span class="hljs-string">'Admin'</span>,
@@ -119,7 +142,7 @@ Realizing this, we may choose to embed users inside roles instead. This could re
 ]
 </code></pre>
 <p><code>Teams:</code></p>
-<pre><code class="hljs css javascript">[
+<pre><code class="hljs css languages- javascript">[
    {
       <span class="hljs-attr">_id</span>: <span class="hljs-number">1357</span>,
       <span class="hljs-attr">name</span>: <span class="hljs-string">'Managers'</span>,
@@ -154,4 +177,4 @@ With rest-hapi, <a href="https://github.com/JKHeadley/rest-hapi#associations">en
 </blockquote>
 <p>My latest endeavor has been to develop a boilerplate user system (called <a href="https://github.com/JKHeadley/appy">appy</a>) that provides common user services while leveraging the power of rest-hapi to give a full-featured app bootstrapper. I just completed the first version and so far I feel that it exemplifies the usefulness of rest-hapi. The <a href="https://github.com/JKHeadley/appy/wiki/Authorization#appy-permission-system">permissions system</a> implemented in appy even takes advantage of the junction table support to allow for enabling/disabling of specific permission relationships.
 I hope you take some time to check out rest-hapi and appy. I feel like they can be a significant contribution to the developer community. If you have any feedback, feel free to leave a comment below or open an issue in <a href="https://github.com/JKHeadley/rest-hapi/issues">GitHub</a>. If you want to get in touch you can reach me at <a href="https://twitter.com/JKHeadley">Twitter</a>, <a href="https://www.facebook.com/justinkheadley">Facebook</a>, or <a href="https://www.linkedin.com/in/justinkheadley">LinkedIn</a>, or email me at <a href="mailto:headley.justin@gmail.com">headley.justin@gmail.com</a>. I hope you enjoyed this post, thanks for reading!</p>
-</span></div></div></div><div class="blog-recent"><a class="button" href="/rest-hapi/blog">Recent Posts</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/rest-hapi/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#method-1-embedding-documents-https-docsmongodbcom-v30-tutorial-model-embedded-one-to-many-relationships-between-documents">Method 1: <a href="https://docs.mongodb.com/v3.0/tutorial/model-embedded-one-to-many-relationships-between-documents/">Embedding Documents</a></a></li><li><a href="#method-2-document-references-https-docsmongodbcom-v30-tutorial-model-referenced-one-to-many-relationships-between-documents">Method 2: <a href="https://docs.mongodb.com/v3.0/tutorial/model-referenced-one-to-many-relationships-between-documents/">Document References</a></a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/rest-hapi/" class="nav-home"><img src="/rest-hapi/img/rest-hapi-logo-alt.png" alt="rest-hapi" width="66" height="58"/></a><div><h5>Docs</h5><a href="/rest-hapi/docs/en/getting-started.html">Getting Started</a><a href="/rest-hapi/docs/en/configuration.html">Usage</a><a href="/rest-hapi/docs/en/testing.html">Other</a></div><div><h5>Community</h5><a href="/rest-hapi/en/users.html">User Showcase</a><a href="https://stackoverflow.com/search?q=rest-hapi" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://gitter.im/rest-hapi">Project Chat</a><a href="https://twitter.com/resthapi" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/rest-hapi/blog">Blog</a><a href="https://github.com/JKHeadley/rest-hapi">GitHub</a><a class="github-button" href="https://github.com/JKHeadley/rest-hapi" data-icon="octicon-star" data-count-href="/JKHeadley/rest-hapi/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/rest-hapi/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Justin Headley</section></footer></div></body></html>

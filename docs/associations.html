@@ -1,14 +1,37 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Associations · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Associations · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="The rest-hapi framework supports model associations that mimic associations in a relational database.  This includes [one-one](#one-one), [one-many](#one-many-many-one), [many-one](#one-many-many-one), and [many-many](#many-many) relationships.  Associations are created by adding the relevant schema fields and populating the ``associations`` object within ``routeOptions``.  Associations exists as references to a document&#x27;s ``_id`` field, and can be populated to return the associated object.  See [Querying](/rest-hapi/docs/querying.html#populate-nested-associations) for more details on how to populate associations."/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
-          var toggler = document.getElementById('navToggler');
-          var nav = document.getElementById('docsNav');
-          toggler.onclick = function() {
-            nav.classList.toggle('docsSliderActive');
-          };
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Associations · rest-hapi</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="The rest-hapi framework supports model associations that mimic associations in a relational database.  This includes [one-one](#one-one), [one-many](#one-many-many-one), [many-one](#one-many-many-one), and [many-many](#many-many) relationships.  Associations are created by adding the relevant schema fields and populating the ``associations`` object within ``routeOptions``.  Associations exists as references to a document&#x27;s ``_id`` field, and can be populated to return the associated object.  See [Querying](/rest-hapi/docs/querying.html#populate-nested-associations) for more details on how to populate associations."/><meta property="og:title" content="Associations · rest-hapi"/><meta property="og:type" content="website"/><meta property="og:url" content="https://jkheadley.github.io/rest-hapi/index.html"/><meta property="og:description" content="The rest-hapi framework supports model associations that mimic associations in a relational database.  This includes [one-one](#one-one), [one-many](#one-many-many-one), [many-one](#one-many-many-one), and [many-many](#many-many) relationships.  Associations are created by adding the relevant schema fields and populating the ``associations`` object within ``routeOptions``.  Associations exists as references to a document&#x27;s ``_id`` field, and can be populated to return the associated object.  See [Querying](/rest-hapi/docs/querying.html#populate-nested-associations) for more details on how to populate associations."/><meta property="og:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="shortcut icon" href="/rest-hapi/img/rest-hapi-logo-alt.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://jkheadley.github.io/rest-hapi/blog/atom.xml" title="rest-hapi Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://jkheadley.github.io/rest-hapi/blog/feed.xml" title="rest-hapi Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener("DOMContentLoaded", function(){
+          addBackToTop(
+            {"zIndex":1000}
+          )
+        });
+        </script><link rel="stylesheet" href="/rest-hapi/css/main.css"/></head><body class="sideNavVisible doc separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/rest-hapi/"><img class="logo" src="/rest-hapi/img/rest-hapi-logo.png" alt="rest-hapi"/><h2 class="headerTitleWithLogo">rest-hapi</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/rest-hapi/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="/rest-hapi/en/help.html" target="_self">Help</a></li><li class=""><a href="/rest-hapi/blog" target="_self">Blog</a></li><li class=""><a href="/rest-hapi/en/users.html" target="_self">Users</a></li><li class=""><a href="https://github.com/JKHeadley/rest-hapi" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Usage</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/swagger-documentation.html">Swagger Documentation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Usage</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/configuration.html">Configuration</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/creating-endpoints.html">Creating Endpoints</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/rest-hapi/docs/associations.html">Assocations</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/route-customization.html">Route Customization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/querying.html">Querying</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/duplicate-fields.html">Duplicate Fields</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/validation.html">Validation</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/middleware.html">Middleware</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/authorization.html">Authorization</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/audit-logs.html">Audit Logs</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/policies.html">Policies</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/mongoose-wrapper-methods.html">Mongoose Wrapper Methods</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/soft-delete.html">Soft Delete</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/metadata.html">Metadata</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/model-generation.html">Model Generation</a></li></ul></div><div class="navGroup navGroupActive"><h3>Other</h3><ul><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/testing.html">Testing</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/questions.html">Questions</a></li><li class="navListItem"><a class="navItem" href="/rest-hapi/docs/support.html">Support</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
         </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/JKHeadley/rest-hapi-docs/tree/master/docs/associations.md" target="_blank" rel="noreferrer noopener">Edit</a><h1>Associations</h1></header><article><div><span><p>The rest-hapi framework supports model associations that mimic associations in a relational database.  This includes <a href="#one-one">one-one</a>, <a href="#one-many-many-one">one-many</a>, <a href="#one-many-many-one">many-one</a>, and <a href="#many-many">many-many</a> relationships.  Associations are created by adding the relevant schema fields and populating the <code>associations</code> object within <code>routeOptions</code>.  Associations exists as references to a document's <code>_id</code> field, and can be populated to return the associated object.  See <a href="/rest-hapi/docs/querying.html#populate-nested-associations">Querying</a> for more details on how to populate associations.</p>
 <h2><a class="anchor" aria-hidden="true" id="one-one"></a><a href="#one-one" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ONE_ONE</h2>
 <p>Below is an example of a one-one relationship between a <code>user</code> model and a <code>dog</code> model. Notice the <code>dog</code> and <code>owner</code> fields in the schemas.  A schema field is required for associations of type <code>ONE_ONE</code> or <code>MANY_ONE</code>.  This field must match the association name, include a type of <code>ObjectId</code>, and include a <code>ref</code> property with the associated model name.</p>
 <p>Each association must be added to an <code>associations</code> object within the <code>routeOptions</code> object. The <code>type</code> and <code>model</code> fields are required for all associations.</p>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/user.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -45,7 +68,7 @@
   <span class="hljs-keyword">return</span> Schema;
 };
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/dog.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/dog.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"dog"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -83,7 +106,7 @@
 </blockquote>
 <h2><a class="anchor" aria-hidden="true" id="one-many-many-one"></a><a href="#one-many-many-one" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ONE_MANY/MANY_ONE</h2>
 <p>Below is an example of a one-many/many-one relationship between the <code>user</code> and <code>role</code> models.  Notice the <code>title</code> field in the schema.  A schema field is required for associations of type <code>ONE_ONE</code> or <code>MANY_ONE</code>. This field must match the association name, include a type of <code>ObjectId</code>, and include a <code>ref</code> property with the associated model name.</p>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/user.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -121,7 +144,7 @@
   <span class="hljs-keyword">return</span> Schema;
 };
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/role.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/role.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"role"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -154,7 +177,7 @@
 </code></pre>
 <p>In this example, a user can belong to one role and a role can be assigned to many users.  The <code>type</code> and <code>model</code> fields are required for all associations, and the <code>foreignField</code> field is required for <code>ONE_MANY</code> type associations.</p>
 <p>Along with the normal CRUD endpoints, the following association endpoints will be generated for the <code>role</code> model:</p>
-<pre><code class="hljs css javascript">GET /role/{ownerId}/user                Get all of the users for a role
+<pre><code class="hljs css languages- javascript">GET /role/{ownerId}/user                Get all of the users for a role
 POST /role/{ownerId}/user               Add multiple users to a role
 DELETE /role/{ownerId}/user             Remove multiple users from a role's list of users
 PUT /role/{ownerId}/user/{childId}      Add a single user object to a role's list of users
@@ -162,7 +185,7 @@ DELETE /role/{ownerId}/user/{childId}   Remove a single user object from a role'
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="many-many"></a><a href="#many-many" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MANY_MANY</h2>
 <p>Below is an example of a many-many relationship between the <code>user</code> and<code>group</code> models. In this relationship a single <code>user</code> instance can belong to multiple <code>group</code> instances and vice versa.</p>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/user.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -195,7 +218,7 @@ DELETE /role/{ownerId}/user/{childId}   Remove a single user object from a role'
   <span class="hljs-keyword">return</span> Schema;
 };
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/group.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/group.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"group"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -225,14 +248,14 @@ DELETE /role/{ownerId}/user/{childId}   Remove a single user object from a role'
 };
 </code></pre>
 <p>Along with the normal CRUD endpoints, the following association endpoints will be generated for the <code>user</code> model:</p>
-<pre><code class="hljs css javascript">GET /user/{ownerId}/group               Get all of the groups for a user
+<pre><code class="hljs css languages- javascript">GET /user/{ownerId}/group               Get all of the groups for a user
 POST /user/{ownerId}/group              Add multiple groups for a user
 DELETE /user/{ownerId}/group            Remove multiple groups from a user's list of groups
 PUT /user/{ownerId}/group/{childId}     Add a single group object to a user's list of groups
 DELETE /user/{ownerId}/group/{childId}  Remove a single group object from a user's list of groups
 </code></pre>
 <p>and for the <code>group</code> model:</p>
-<pre><code class="hljs css javascript">GET /group/{ownerId}/user               Get all of the users for a group
+<pre><code class="hljs css languages- javascript">GET /group/{ownerId}/user               Get all of the users for a group
 POST /group/{ownerId}/user              Add multiple users for a group
 DELETE /group/{ownerId}/user            Remove multiple users from a group's list of users
 PUT /group/{ownerId}/user/{childId}     Add a single user object to a group's list of users
@@ -243,7 +266,7 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
 <blockquote>
 <p><strong>NOTE</strong>: The linking model filename does not have to match the model name, however the <code>linkingModel</code> association property <strong>must</strong> match the linking model <code>modleName</code> property.</p>
 </blockquote>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/user.model.js</span>
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
@@ -278,7 +301,7 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
   <span class="hljs-keyword">return</span> Schema;
 };
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// models/linking-models/user_user.model.js</span>
+<pre><code class="hljs css languages- javascript"><span class="hljs-comment">// models/linking-models/user_user.model.js</span>
 <span class="hljs-keyword">let</span> mongoose = <span class="hljs-built_in">require</span>(<span class="hljs-string">"mongoose"</span>);
 
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
@@ -332,7 +355,7 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
 </ul></li>
 </ul>
 <p>The <a href="/rest-hapi/docs/configuration.html#embedassociations"><code>config.embedAssociations</code></a> can be overwritten for individual associations through the <code>embedAssociation</code> property. See the example below:</p>
-<pre><code class="hljs css javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+<pre><code class="hljs css languages- javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
     <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"group"</span>;
     <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
     <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
@@ -363,7 +386,7 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
     <span class="hljs-keyword">return</span> Schema;
 };
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+<pre><code class="hljs css languages- javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
     <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>;
     <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
     <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
@@ -408,7 +431,7 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
 <h2><a class="anchor" aria-hidden="true" id="many"></a><a href="#many" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>_MANY</h2>
 <p>A one-sided -many relationship can exists between two models. This allows the parent model to have direct control over the reference Ids. Below is an example of a -many relationship between the <code>post</code> and <code>hashtag</code> models.</p>
 <p><code>/models/post.model.js</code>:</p>
-<pre><code class="hljs css javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
+<pre><code class="hljs css languages- javascript"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"post"</span>;
   <span class="hljs-keyword">let</span> Types = mongoose.Schema.Types;
   <span class="hljs-keyword">let</span> Schema = <span class="hljs-keyword">new</span> mongoose.Schema({
@@ -443,14 +466,14 @@ DELETE /group/{ownerId}/user/{childId}  Remove a single user object from a group
 </code></pre>
 <p>In this example, a <code>post</code> contains many hashtags, but the <code>hashtag</code> model will have no association with the <code>post</code> model.</p>
 <p>Similar to one-many or many-many relationships the following association endpoints will be generated for the <code>post</code> model:</p>
-<pre><code class="hljs css javascript">GET /post/{ownerId}/hashtag                Get all of the hashtags for a post
+<pre><code class="hljs css languages- javascript">GET /post/{ownerId}/hashtag                Get all of the hashtags for a post
 POST /post/{ownerId}/hashtag               Add multiple hashtags to a post
 DELETE /post/{ownerId}/hashtag             Remove multiple hashtags from a post's list of hashtags
 PUT /post/{ownerId}/hashtag/{childId}      Add a single hashtag object to a post's list of hashtags
 DELETE /post/{ownerId}/hashtag/{childId}   Remove a single hashtag object from a post's list of hashtags
 </code></pre>
 <p>However, unlike a one-many or many-many relationship, the -many relationship will exist as a mutable model property which is simply an array of objectIds. This means the associations can be directly modified through the parent model <code>create</code> and         <code>update</code> endpoints. For example, the following json could be used as a payload for either the <code>POST /post</code> or <code>PUT /post/{_id}</code> endpoints:</p>
-<pre><code class="hljs css javascript">{
+<pre><code class="hljs css languages- javascript">{
   <span class="hljs-string">"caption"</span>: <span class="hljs-string">"Having a great day!"</span>,
   <span class="hljs-string">"user"</span>:<span class="hljs-string">"59960dce22a535c8edfa1317"</span>,
   <span class="hljs-string">"hashtags"</span>: [

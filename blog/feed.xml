@@ -2,21 +2,21 @@
 <rss version="2.0">
     <channel>
         <title>rest-hapi Blog</title>
-        <link>https://jkheadley.github.io/rest-hapi/blog</link>
+        <link>https://jkheadley.github.io/blog</link>
         <description>The best place to stay up-to-date with the latest rest-hapi news and events.</description>
         <lastBuildDate>Fri, 17 Feb 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
             <title>rest-hapi Blog</title>
-            <url>https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo.png</url>
-            <link>https://jkheadley.github.io/rest-hapi/blog</link>
+            <url>https://jkheadley.github.io/img/rest-hapi-logo.png</url>
+            <link>https://jkheadley.github.io/blog</link>
         </image>
         <copyright>Copyright © 2018 Justin Headley</copyright>
         <item>
             <title><![CDATA[The Problem With MongoDB]]></title>
-            <link>https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html</link>
-            <guid>https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html</guid>
+            <link>https://jkheadley.github.io/blog/2017/02/17/The-Problem-With-MongoDB.html</link>
+            <guid>https://jkheadley.github.io/blog/2017/02/17/The-Problem-With-MongoDB.html</guid>
             <pubDate>Fri, 17 Feb 2017 06:00:00 GMT</pubDate>
             <description><![CDATA[<blockquote>
 <p>Original post can be found <a href="https://hackernoon.com/the-problem-with-mongodb-d255e897b4b">here on Medium</a></p>
@@ -29,8 +29,8 @@ For web apps using Nodejs/javascript, MongoDB is particularly nice since data is
         </item>
         <item>
             <title><![CDATA[The Problem With APIs]]></title>
-            <link>https://jkheadley.github.io/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html</link>
-            <guid>https://jkheadley.github.io/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html</guid>
+            <link>https://jkheadley.github.io/blog/2016/11/19/The-Problem-With-APIs.html</link>
+            <guid>https://jkheadley.github.io/blog/2016/11/19/The-Problem-With-APIs.html</guid>
             <pubDate>Sat, 19 Nov 2016 06:00:00 GMT</pubDate>
             <description><![CDATA[<blockquote>
 <p>Original post can be found <a href="https://hackernoon.com/the-problem-with-apis-331f08f7a39c">here on Medium</a></p>

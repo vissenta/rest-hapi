@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://jkheadley.github.io/rest-hapi/blog</id>
+    <id>https://jkheadley.github.io/blog</id>
     <title>rest-hapi Blog</title>
     <updated>2017-02-17T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
-    <link rel="alternate" href="https://jkheadley.github.io/rest-hapi/blog"/>
+    <link rel="alternate" href="https://jkheadley.github.io/blog"/>
     <subtitle>The best place to stay up-to-date with the latest rest-hapi news and events.</subtitle>
-    <logo>https://jkheadley.github.io/rest-hapi/img/rest-hapi-logo.png</logo>
+    <logo>https://jkheadley.github.io/img/rest-hapi-logo.png</logo>
     <rights>Copyright © 2018 Justin Headley</rights>
     <entry>
         <title type="html"><![CDATA[The Problem With MongoDB]]></title>
-        <id>https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html</id>
-        <link href="https://jkheadley.github.io/rest-hapi/blog/2017/02/17/The-Problem-With-MongoDB.html">
+        <id>https://jkheadley.github.io/blog/2017/02/17/The-Problem-With-MongoDB.html</id>
+        <link href="https://jkheadley.github.io/blog/2017/02/17/The-Problem-With-MongoDB.html">
         </link>
         <updated>2017-02-17T06:00:00Z</updated>
         <summary type="html"><![CDATA[<blockquote>
@@ -29,8 +29,8 @@ For web apps using Nodejs/javascript, MongoDB is particularly nice since data is
     </entry>
     <entry>
         <title type="html"><![CDATA[The Problem With APIs]]></title>
-        <id>https://jkheadley.github.io/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html</id>
-        <link href="https://jkheadley.github.io/rest-hapi/blog/2016/11/19/The-Problem-With-APIs.html">
+        <id>https://jkheadley.github.io/blog/2016/11/19/The-Problem-With-APIs.html</id>
+        <link href="https://jkheadley.github.io/blog/2016/11/19/The-Problem-With-APIs.html">
         </link>
         <updated>2016-11-19T06:00:00Z</updated>
         <summary type="html"><![CDATA[<blockquote>

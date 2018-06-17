@@ -94,7 +94,7 @@
 <pre><code class="hljs css javascript"><span class="hljs-comment">// models/user.model.js</span>
 <span class="hljs-keyword">let</span> Joi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'joi'</span>)
 <span class="hljs-keyword">let</span> bcrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bcrypt'</span>)
-<span class="hljs-keyword">let</span> restHapi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rest-hapi'</span>)
+<span class="hljs-keyword">let</span> RestHapi = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rest-hapi'</span>)
 
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mongoose</span>) </span>{
   <span class="hljs-keyword">let</span> modelName = <span class="hljs-string">"user"</span>
@@ -129,7 +129,7 @@
           <span class="hljs-keyword">let</span> handler = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">request, h</span>) </span>{
             <span class="hljs-keyword">try</span> {
               <span class="hljs-keyword">let</span> hashedPassword = model.generatePasswordHash(request.payload.password)
-              <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> restHapi.update(model, request.params._id, {<span class="hljs-attr">password</span>: hashedPassword}, Log)
+              <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> RestHapi.update(model, request.params._id, {<span class="hljs-attr">password</span>: hashedPassword}, Log)
               <span class="hljs-keyword">if</span> (result) {
                 <span class="hljs-keyword">return</span> h.response(<span class="hljs-string">"Password updated."</span>).code(<span class="hljs-number">200</span>)
               }

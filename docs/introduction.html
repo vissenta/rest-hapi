@@ -33,12 +33,11 @@
         <span class="hljs-attr">appTitle</span>: <span class="hljs-string">"My API"</span>,
     };
 
-    RestHapi.config = config;
-
     <span class="hljs-keyword">await</span> server.register({
       <span class="hljs-attr">plugin</span>: RestHapi,
       <span class="hljs-attr">options</span>: {
         mongoose,
+        config
       }
     })
 

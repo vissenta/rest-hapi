@@ -4,6 +4,7 @@
 <url> <loc>https://resthapi.com/help.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/en/help.html" /> </url>
 <url> <loc>https://resthapi.com/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/en/index.html" /> </url>
 <url> <loc>https://resthapi.com/users.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/en/users.html" /> </url>
+<url> <loc>https://resthapi.com/blog/2018/06/26/How-To-Build-Powerful-APIs-Blazingly-Fast-With-Nodejs.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://resthapi.com/blog/2017/02/17/The-Problem-With-MongoDB.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://resthapi.com/blog/2016/11/19/The-Problem-With-APIs.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://resthapi.com/docs/associations.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/associations.html" /> </url>

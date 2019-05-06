@@ -9,6 +9,7 @@
 <url> <loc>https://resthapi.com/blog/2016/11/19/The-Problem-With-APIs.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://resthapi.com/docs/associations.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/associations.html" /> </url>
 <url> <loc>https://resthapi.com/docs/audit-logs.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/audit-logs.html" /> </url>
+<url> <loc>https://resthapi.com/docs/authentication.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/authentication.html" /> </url>
 <url> <loc>https://resthapi.com/docs/authorization.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/authorization.html" /> </url>
 <url> <loc>https://resthapi.com/docs/configuration.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/configuration.html" /> </url>
 <url> <loc>https://resthapi.com/docs/creating-endpoints.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://resthapi.com/docs/creating-endpoints.html" /> </url>

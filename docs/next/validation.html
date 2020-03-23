@@ -89,7 +89,7 @@
 <tr><th>Field Property</th><th>joi Validation</th></tr>
 </thead>
 <tbody>
-<tr><td>enum: [items]</td><td>Joi.any().only([items])</td></tr>
+<tr><td>enum: [items]</td><td>Joi.string().valid(...[items])</td></tr>
 <tr><td>regex: RegExp</td><td>Joi.string().regex(RegExp)</td></tr>
 <tr><td>stringType: 'email'</td><td>Joi.string().email()</td></tr>
 <tr><td>stringType: 'uri'</td><td>Joi.string().uri()</td></tr>

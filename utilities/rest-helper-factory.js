@@ -48,27 +48,29 @@ module.exports = function(logger, mongoose, server) {
 
         options = options || {}
 
-        if (model.routeOptions.allowRead !== false) {
+        const { routeOptions } = model.Schema.statics
+
+        if (routeOptions.allowRead !== false) {
           this.generateListEndpoint(server, model, options, Log)
           this.generateFindEndpoint(server, model, options, Log)
         }
 
-        if (model.routeOptions.allowCreate !== false) {
+        if (routeOptions.allowCreate !== false) {
           this.generateCreateEndpoint(server, model, options, Log)
         }
 
-        if (model.routeOptions.allowUpdate !== false) {
+        if (routeOptions.allowUpdate !== false) {
           this.generateUpdateEndpoint(server, model, options, Log)
         }
 
-        if (model.routeOptions.allowDelete !== false) {
+        if (routeOptions.allowDelete !== false) {
           this.generateDeleteOneEndpoint(server, model, options, Log)
           this.generateDeleteManyEndpoint(server, model, options, Log)
         }
 
-        if (model.routeOptions.associations) {
-          for (const associationName in model.routeOptions.associations) {
-            const association = model.routeOptions.associations[associationName]
+        if (routeOptions.associations) {
+          for (const associationName in routeOptions.associations) {
+            const association = routeOptions.associations[associationName]
 
             if (
               association.type === 'MANY_MANY' ||
@@ -121,10 +123,10 @@ module.exports = function(logger, mongoose, server) {
           }
         }
 
-        if (model.routeOptions && model.routeOptions.extraEndpoints) {
-          for (const extraEndpointIndex in model.routeOptions.extraEndpoints) {
+        if (routeOptions && routeOptions.extraEndpoints) {
+          for (const extraEndpointIndex in routeOptions.extraEndpoints) {
             const extraEndpointFunction =
-              model.routeOptions.extraEndpoints[extraEndpointIndex]
+              routeOptions.extraEndpoints[extraEndpointIndex]
 
             extraEndpointFunction(server, model, options, Log)
           }
@@ -147,19 +149,21 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('List'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       options = options || {}
 
       if (config.logRoutes) {
         Log.note('Generating List endpoint for ' + collectionName)
       }
 
+      const { routeOptions } = model.Schema.statics
+
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateListHandler(model, options, Log)
@@ -178,7 +182,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let listHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.readAuth !== false) {
+      if (config.authStrategy && routeOptions.readAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -197,8 +201,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.readPolicies || []
         )
@@ -211,8 +215,9 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'GET',
-        path: '/' + resourceAliasForRoute,
+        path: '/' + resourceAliasForRoute.toLowerCase(),
         config: {
+          pre: config.preRoute || [],
           handler: handler,
           auth: auth,
           description: 'Get a list of ' + collectionName + 's',
@@ -276,17 +281,19 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('Find'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       if (config.logRoutes) {
         Log.note('Generating Find endpoint for ' + collectionName)
       }
 
+      const { routeOptions } = model.Schema.statics
+
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateFindHandler(model, options, Log)
@@ -306,7 +313,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let findHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.readAuth !== false) {
+      if (config.authStrategy && routeOptions.readAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -328,8 +335,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.readPolicies || []
         )
@@ -342,7 +349,7 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'GET',
-        path: '/' + resourceAliasForRoute + '/{_id}',
+        path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
         config: {
           handler: handler,
           auth: auth,
@@ -403,19 +410,21 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('Create'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       if (config.logRoutes) {
         Log.note('Generating Create endpoint for ' + collectionName)
       }
+
+      const { routeOptions } = model.Schema.statics
 
       options = options || {}
 
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateCreateHandler(model, options, Log)
@@ -451,7 +460,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let createHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.createAuth !== false) {
+      if (config.authStrategy && routeOptions.createAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -470,8 +479,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.createPolicies || []
         )
@@ -479,25 +488,25 @@ module.exports = function(logger, mongoose, server) {
 
       if (config.enableDocumentScopes && auth) {
         const authorizeDocumentCreator =
-          model.routeOptions.authorizeDocumentCreator === undefined
+          routeOptions.authorizeDocumentCreator === undefined
             ? config.authorizeDocumentCreator
-            : model.routeOptions.authorizeDocumentCreator
+            : routeOptions.authorizeDocumentCreator
         const authorizeDocumentCreatorToRead =
-          model.routeOptions.authorizeDocumentCreatorToRead === undefined
+          routeOptions.authorizeDocumentCreatorToRead === undefined
             ? config.authorizeDocumentCreatorToRead
-            : model.routeOptions.authorizeDocumentCreatorToRead
+            : routeOptions.authorizeDocumentCreatorToRead
         const authorizeDocumentCreatorToUpdate =
-          model.routeOptions.authorizeDocumentCreatorToUpdate === undefined
+          routeOptions.authorizeDocumentCreatorToUpdate === undefined
             ? config.authorizeDocumentCreatorToUpdate
-            : model.routeOptions.authorizeDocumentCreatorToUpdate
+            : routeOptions.authorizeDocumentCreatorToUpdate
         const authorizeDocumentCreatorToDelete =
-          model.routeOptions.authorizeDocumentCreatorToDelete === undefined
+          routeOptions.authorizeDocumentCreatorToDelete === undefined
             ? config.authorizeDocumentCreatorToDelete
-            : model.routeOptions.authorizeDocumentCreatorToDelete
+            : routeOptions.authorizeDocumentCreatorToDelete
         const authorizeDocumentCreatorToAssociate =
-          model.routeOptions.authorizeDocumentCreatorToAssociate === undefined
+          routeOptions.authorizeDocumentCreatorToAssociate === undefined
             ? config.authorizeDocumentCreatorToAssociate
-            : model.routeOptions.authorizeDocumentCreatorToAssociate
+            : routeOptions.authorizeDocumentCreatorToAssociate
 
         if (authorizeDocumentCreator) {
           policies.push(restHapiPolicies.authorizeDocumentCreator(model, Log))
@@ -523,7 +532,7 @@ module.exports = function(logger, mongoose, server) {
           )
         }
 
-        if (model.routeOptions.documentScope) {
+        if (routeOptions.documentScope) {
           policies.push(restHapiPolicies.addDocumentScope(model, Log))
         }
       }
@@ -544,7 +553,7 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'POST',
-        path: '/' + resourceAliasForRoute,
+        path: '/' + resourceAliasForRoute.toLowerCase(),
         config: {
           handler: handler,
           auth: auth,
@@ -598,19 +607,21 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('DeleteOne'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       if (config.logRoutes) {
         Log.note('Generating Delete One endpoint for ' + collectionName)
       }
+
+      const { routeOptions } = model.Schema.statics
 
       options = options || {}
 
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateDeleteHandler(model, options, Log)
@@ -627,7 +638,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let deleteOneHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.deleteAuth !== false) {
+      if (config.authStrategy && routeOptions.deleteAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -649,8 +660,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.deletePolicies || []
         )
@@ -671,7 +682,7 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'DELETE',
-        path: '/' + resourceAliasForRoute + '/{_id}',
+        path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
         config: {
           handler: handler,
           auth: auth,
@@ -734,19 +745,21 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('DeleteMany'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       if (config.logRoutes) {
         Log.note('Generating Delete Many endpoint for ' + collectionName)
       }
+
+      const { routeOptions } = model.Schema.statics
 
       options = options || {}
 
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateDeleteHandler(model, options, Log)
@@ -773,7 +786,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let deleteManyHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.deleteAuth !== false) {
+      if (config.authStrategy && routeOptions.deleteAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -792,8 +805,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.deletePolicies || []
         )
@@ -814,7 +827,7 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'DELETE',
-        path: '/' + resourceAliasForRoute,
+        path: '/' + resourceAliasForRoute.toLowerCase(),
         config: {
           handler: handler,
           auth: auth,
@@ -873,19 +886,21 @@ module.exports = function(logger, mongoose, server) {
       validationHelper.validateModel(model, logger)
       const Log = logger.bind(chalk.yellow('Update'))
 
-      const collectionName = model.collectionDisplayName || model.modelName
+      const collectionName = model.collectionDisplayName || model.name
       if (config.logRoutes) {
         Log.note('Generating Update endpoint for ' + collectionName)
       }
+
+      const { routeOptions } = model.Schema.statics
 
       options = options || {}
 
       let resourceAliasForRoute
 
-      if (model.routeOptions) {
-        resourceAliasForRoute = model.routeOptions.alias || model.modelName
+      if (routeOptions) {
+        resourceAliasForRoute = routeOptions.alias || model.name
       } else {
-        resourceAliasForRoute = model.modelName
+        resourceAliasForRoute = model.name
       }
 
       const handler = HandlerHelper.generateUpdateHandler(model, options, Log)
@@ -911,7 +926,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let updateHeadersValidation = Object.assign(headersValidation, {})
 
-      if (config.authStrategy && model.routeOptions.updateAuth !== false) {
+      if (config.authStrategy && routeOptions.updateAuth !== false) {
         auth = {
           strategy: config.authStrategy
         }
@@ -933,8 +948,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (model.routeOptions.policies && config.enablePolicies) {
-        policies = model.routeOptions.policies
+      if (routeOptions.policies && config.enablePolicies) {
+        policies = routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.updatePolicies || []
         )
@@ -966,7 +981,7 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'PUT',
-        path: '/' + resourceAliasForRoute + '/{_id}',
+        path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
         config: {
           handler: handler,
           auth: auth,
@@ -1170,7 +1185,12 @@ module.exports = function(logger, mongoose, server) {
 
       server.route({
         method: 'PUT',
-        path: '/' + ownerAlias + '/{ownerId}/' + childAlias + '/{childId}',
+        path:
+          '/' +
+          ownerAlias.toLowerCase() +
+          '/{ownerId}/' +
+          childAlias.toLowerCase() +
+          '/{childId}',
         config: {
           handler: handler,
           auth: auth,
@@ -1246,7 +1266,7 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('RemoveOne'))
 
       assert(
-        ownerModel.routeOptions.associations,
+        ownerrouteOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
@@ -1271,7 +1291,7 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
       const childAlias =
         association.alias || association.include.model.modelName
 
@@ -1285,7 +1305,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let removeOneHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerModel.routeOptions.associateAuth === false) {
+      if (ownerrouteOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "removeAuth" instead.'
         )
@@ -1293,7 +1313,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerModel.routeOptions.associateAuth !== false &&
+        ownerrouteOptions.associateAuth !== false &&
         association.removeAuth !== false
       ) {
         auth = {
@@ -1336,8 +1356,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerModel.routeOptions.policies) {
-        policies = ownerModel.routeOptions.policies
+      if (ownerrouteOptions.policies) {
+        policies = ownerrouteOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1439,7 +1459,7 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('AddMany'))
 
       assert(
-        ownerModel.routeOptions.associations,
+        ownerrouteOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
@@ -1464,7 +1484,7 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
       const childAlias =
         association.alias || association.include.model.modelName
 
@@ -1511,7 +1531,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let addManyHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerModel.routeOptions.associateAuth === false) {
+      if (ownerrouteOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "addAuth" instead.'
         )
@@ -1519,7 +1539,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerModel.routeOptions.associateAuth !== false &&
+        ownerrouteOptions.associateAuth !== false &&
         association.addAuth !== false
       ) {
         auth = {
@@ -1557,8 +1577,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerModel.routeOptions.policies) {
-        policies = ownerModel.routeOptions.policies
+      if (ownerrouteOptions.policies) {
+        policies = ownerrouteOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1657,7 +1677,7 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('RemoveMany'))
 
       assert(
-        ownerModel.routeOptions.associations,
+        ownerrouteOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
@@ -1682,7 +1702,7 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
       const childAlias =
         association.alias || association.include.model.modelName
 
@@ -1707,7 +1727,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let removeManyHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerModel.routeOptions.associateAuth === false) {
+      if (ownerrouteOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "removeAuth" instead.'
         )
@@ -1715,7 +1735,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerModel.routeOptions.associateAuth !== false &&
+        ownerrouteOptions.associateAuth !== false &&
         association.removeAuth !== false
       ) {
         auth = {
@@ -1757,8 +1777,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerModel.routeOptions.policies) {
-        policies = ownerModel.routeOptions.policies
+      if (ownerrouteOptions.policies) {
+        policies = ownerrouteOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1857,7 +1877,7 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('GetAll'))
 
       assert(
-        ownerModel.routeOptions.associations,
+        ownerrouteOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
@@ -1878,7 +1898,7 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
       const childAlias =
         association.alias || association.include.model.modelName
 
@@ -1923,7 +1943,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let getAllHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerModel.routeOptions.associateAuth === false) {
+      if (ownerrouteOptions.associateAuth === false) {
         Log.warn(
           '"routeOptions.readAuth" property is deprecated for associations, please use "association.readAuth" instead.'
         )
@@ -1931,7 +1951,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerModel.routeOptions.readAuth !== false &&
+        ownerrouteOptions.readAuth !== false &&
         association.readAuth !== false
       ) {
         auth = {
@@ -1965,8 +1985,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerModel.routeOptions.policies) {
-        policies = ownerModel.routeOptions.policies
+      if (ownerrouteOptions.policies) {
+        policies = ownerrouteOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.readPolicies || []
         )

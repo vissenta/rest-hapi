@@ -55,9 +55,11 @@ config.cors = {
 /**
  * Mongo settings
  * - config.mongo.URI = 'mongodb://localhost/rest_hapi'; (local db, default)
+ * - config.mongo.defaultConnection = 'default'; Default connection for models
  * - config.mongo.options = {} (mongoose options)
  */
 config.mongo.URI = 'mongodb://localhost/rest_hapi'
+config.mongo.defaultConnection = 'default'
 config.mongo.options = {}
 
 /**

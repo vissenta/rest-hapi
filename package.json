@@ -1,5 +1,5 @@
 {
-  "name": "rest-hapi",
+  "name": "@vissenta/rest-hapi",
   "version": "2.1.1",
   "description": "A RESTful API generator for hapi",
   "main": "rest-hapi.js",

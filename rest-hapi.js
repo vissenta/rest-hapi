@@ -22,10 +22,13 @@ const globals = require('./globals')
 
 const internals = {
   modelsGenerated: false,
-  globalModels: {}
+  globalSchemas: {},
+  globalModels: {},
+  globalConnections: {},
+  pre: []
 }
 
-module.exports = {
+const exported = {
   plugin: {
     name: 'rest-hapi',
     version: '1.0.0',
@@ -51,8 +54,12 @@ module.exports = {
   joiHelper: joiHelper,
   testHelper: testHelper,
   server: {},
-  models: {}
+  schema: {},
+  models: {},
+  model: getModel
 }
+
+module.exports = exported
 
 async function register(server, options) {
   module.exports.server = server
@@ -82,18 +89,30 @@ async function register(server, options) {
     return h.continue
   })
 
-  const mongoose = mongooseInit(options.mongoose, Log, config)
+  if (Array.isArray(options.pre)) {
+    internals.pre = options.pre
+  }
+
+  // const mongoose = mongooseInit(options.mongoose, Log, config)
+
+  // Register mongoose connect method
+  server.method('dbConnect', (defaultDbConfig = {}) => {
+    const dbConfig = options.config.mongo
+    extend(true, dbConfig, { name: 'default' }, defaultDbConfig)
+
+    return mongooseInit(options.mongoose, Log, dbConfig)
+  })
 
   logUtil.logActionStart(Log, 'Initializing Server')
 
-  let models
+  let schema
 
   if (internals.modelsGenerated) {
     // Models generated previously
-    models = internals.globalModels
+    schema = internals.globalSchemas
   } else {
     try {
-      models = await modelGenerator(mongoose, Log, config)
+      schema = await modelGenerator(options.mongoose, Log, config)
     } catch (err) {
       if (err.message.includes('no such file')) {
         Log.error(
@@ -106,7 +125,8 @@ async function register(server, options) {
     }
   }
 
-  module.exports.models = models
+  module.exports.schema = schema
+  internals.globalSchemas = schema
 
   if (!config.disableSwagger) {
     await registerHapiSwagger(server, Log, config)
@@ -114,7 +134,7 @@ async function register(server, options) {
 
   await registerMrHorse(server, Log, config)
 
-  await generateRoutes(server, mongoose, models, Log, config)
+  await generateRoutes(server, options.mongoose, schema, Log, config)
 }
 
 /**
@@ -134,10 +154,10 @@ function generateModels(mongoose) {
 
   module.exports.logger = Log
 
-  return modelGenerator(mongoose, Log, config).then(function(models) {
-    internals.globalModels = models
-    module.exports.models = models
-    return models
+  return modelGenerator(mongoose, Log, config).then(function(schema) {
+    internals.globalSchemas = schema
+    module.exports.schema = schema
+    return schema
   })
 }
 
@@ -158,6 +178,50 @@ function getLogger(label) {
   return rootLogger
 }
 
+function getConnection(name = 'default') {
+  let connection =
+    internals.globalConnections[exported.config.mongo.defaultConnection]
+
+  if (name !== exported.config.mongo.defaultConnection) {
+    connection = internals.globalConnections[name]
+  }
+
+  if (!connection || !connection.connection) {
+    if (name === exported.config.mongo.defaultConnection) {
+      throw new Error(`No database connections found.`)
+    }
+    throw new Error(`Connection '${name}' does not exists.`)
+  }
+
+  return connection
+}
+
+function getModel(
+  name,
+  connectionName = exported.config.mongo.defaultConnection
+) {
+  const model = spawnModel(name, connectionName)
+  if (connectionName === exported.config.mongo.defaultConnection) {
+    Object.assign(model, { with: conn => getModel(name, conn) })
+  }
+
+  return model
+}
+
+function spawnModel(name, connectionName) {
+  const connection = getConnection(connectionName)
+
+  if (!connection.models[name]) {
+    connection.models[name] = connection.connection.model(
+      name,
+      internals.globalSchemas[name].Schema,
+      name
+    )
+  }
+
+  return connection.models[name]
+}
+
 /**
  * Connect mongoose and add to globals.
  * @param mongoose
@@ -165,7 +229,7 @@ function getLogger(label) {
  * @param config
  * @returns {*}
  */
-function mongooseInit(mongoose, logger, config) {
+async function mongooseInit(mongoose, logger, config) {
   const Log = logger.bind('mongoose-init')
 
   mongoose.Promise = Promise
@@ -173,7 +237,7 @@ function mongooseInit(mongoose, logger, config) {
   logUtil.logActionStart(
     Log,
     'Connecting to Database',
-    _.omit(config.mongo, ['pass'])
+    _.omit(config, ['pass'])
   )
 
   const options = Object.assign(
@@ -181,16 +245,31 @@ function mongooseInit(mongoose, logger, config) {
       useNewUrlParser: true,
       useUnifiedTopology: true
     },
-    config.mongo.options
+    config.options
   )
 
-  mongoose.connect(config.mongo.URI, options)
+  if (
+    internals.globalConnections[config.name] &&
+    internals.globalConnections[config.name].connection
+  ) {
+    Log.warn(
+      `Connection ${chalk.yellow(config.name)} already exists. Skipping...`
+    )
+    return internals.globalConnections[config.name]
+  }
+
+  const connection = await mongoose.createConnection(config.URI, options)
+  internals.globalConnections[config.name] = {
+    name: config.name,
+    models: {},
+    connection
+  }
 
   globals.mongoose = mongoose
 
   Log.log('mongoose connected')
 
-  return mongoose
+  return connection
 }
 
 /**

@@ -90,7 +90,7 @@ module.exports = function(mongoose, logger, config) {
       for (const modelKey in models) {
         // EXPL: Populate internal model associations
         const model = models[modelKey]
-        modelHelper.associateModels(model.schema, models)
+        modelHelper.associateModels(model.Schema, models)
       }
 
       for (const modelKey in models) {

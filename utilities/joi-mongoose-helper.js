@@ -27,10 +27,10 @@ internals.generateJoiReadModel = function(model, logger) {
 
   const readModelBase = {}
 
-  const fields = model.schema.tree
+  const fields = model.Schema.tree
 
-  const associations = model.routeOptions.associations
-    ? Object.keys(model.routeOptions.associations)
+  const associations = model.Schema.statics.routeOptions.associations
+    ? Object.keys(model.Schema.statics.routeOptions.associations)
     : []
 
   for (const fieldName in fields) {
@@ -137,10 +137,10 @@ internals.generateJoiUpdateModel = function(model, logger) {
 
   const updateModelBase = {}
 
-  const fields = model.schema.tree
+  const fields = model.Schema.tree
 
-  const associations = model.routeOptions.associations
-    ? model.routeOptions.associations
+  const associations = model.Schema.statics.routeOptions.associations
+    ? model.Schema.statics.routeOptions.associations
     : {}
 
   for (const fieldName in fields) {
@@ -197,10 +197,10 @@ internals.generateJoiCreateModel = function(model, logger) {
 
   const createModelBase = {}
 
-  const fields = model.schema.tree
+  const fields = model.Schema.tree
 
-  const associations = model.routeOptions.associations
-    ? model.routeOptions.associations
+  const associations = model.Schema.statics.routeOptions.associations
+    ? model.Schema.statics.routeOptions.associations
     : {}
 
   for (const fieldName in fields) {
@@ -340,7 +340,7 @@ internals.generateJoiListQueryModel = function(model, logger) {
 
     _.each(queryableFields, function(fieldName) {
       const joiModel = internals.generateJoiModelFromFieldType(
-        model.schema.paths[fieldName].options,
+        model.Schema.paths[fieldName].options,
         Log
       )
       queryModel[fieldName] = Joi.alternatives().try(
@@ -454,9 +454,9 @@ internals.generateJoiFieldModel = function(
   let fieldModel = {}
   let joiModelFunction = {}
 
-  const nested = model.schema.nested
-  const instance = model.schema.paths[fieldName]
-    ? model.schema.paths[fieldName].instance
+  const nested = model.Schema.nested
+  const instance = model.Schema.paths[fieldName]
+    ? model.Schema.paths[fieldName].instance
     : null
 
   let isArray = false
@@ -507,12 +507,14 @@ internals.generateJoiFieldModel = function(
     }
 
     const nestedModel = {
-      modelName: model.modelName + '.' + fieldName,
+      name: model.Schema.modelName + '.' + fieldName,
+      modelName: model.Schema.modelName + '.' + fieldName,
       fakeModel: true,
       isArray: isArray,
-      routeOptions: {},
-      schema: new mongoose.Schema(field)
+      Schema: new mongoose.Schema(field)
     }
+
+    nestedModel.Schema.statics.routeOptions = {}
 
     fieldModel = joiModelFunction(nestedModel, Log)
     if (isArray) {

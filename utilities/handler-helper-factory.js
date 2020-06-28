@@ -2,6 +2,7 @@
 
 const Boom = require('@hapi/boom')
 const handlerHelper = require('./handler-helper')
+const getModel = require('../rest-hapi').model
 
 // TODO: add bulk delete/delete many
 
@@ -132,12 +133,17 @@ module.exports = function() {
  * @param logger: A logging object.
  * @returns {Function} A handler function
  */
-function generateListHandler(model, options, logger) {
+function generateListHandler(schema, options, logger) {
   const Log = logger.bind()
   options = options || {}
 
   return async function(request, h) {
     try {
+      const args = [schema.Schema.statics.collectionName]
+      if (schema.Schema.statics.connectionName) {
+        args.push(schema.Schema.statics.connectionName)
+      }
+      const model = getModel(...args)
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -161,12 +167,17 @@ function generateListHandler(model, options, logger) {
  * @param logger: A logging object.
  * @returns {Function} A handler function
  */
-function generateFindHandler(model, options, logger) {
+function generateFindHandler(schema, options, logger) {
   const Log = logger.bind()
   options = options || {}
 
   return async function(request, h) {
     try {
+      const args = [schema.Schema.statics.collectionName]
+      if (schema.Schema.statics.connectionName) {
+        args.push(schema.Schema.statics.connectionName)
+      }
+      const model = getModel(...args)
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -194,12 +205,17 @@ function generateFindHandler(model, options, logger) {
  * @param logger: A logging object.
  * @returns {Function} A handler function
  */
-function generateCreateHandler(model, options, logger) {
+function generateCreateHandler(schema, options, logger) {
   const Log = logger.bind()
   options = options || {}
 
   return async function(request, h) {
     try {
+      const args = [schema.Schema.statics.collectionName]
+      if (schema.Schema.statics.connectionName) {
+        args.push(schema.Schema.statics.connectionName)
+      }
+      const model = getModel(...args)
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -222,12 +238,17 @@ function generateCreateHandler(model, options, logger) {
  * @param logger: A logging object.
  * @returns {Function} A handler function
  */
-function generateUpdateHandler(model, options, logger) {
+function generateUpdateHandler(schema, options, logger) {
   const Log = logger.bind()
   options = options || {}
 
   return async function(request, h) {
     try {
+      const args = [schema.Schema.statics.collectionName]
+      if (schema.Schema.statics.connectionName) {
+        args.push(schema.Schema.statics.connectionName)
+      }
+      const model = getModel(...args)
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -255,12 +276,17 @@ function generateUpdateHandler(model, options, logger) {
  * @param logger: A logging object.
  * @returns {Function} A handler function
  */
-function generateDeleteHandler(model, options, logger) {
+function generateDeleteHandler(schema, options, logger) {
   const Log = logger.bind()
   options = options || {}
 
   return async function(request, h) {
     try {
+      const args = [schema.Schema.statics.collectionName]
+      if (schema.Schema.statics.connectionName) {
+        args.push(schema.Schema.statics.connectionName)
+      }
+      const model = getModel(...args)
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),

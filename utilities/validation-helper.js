@@ -10,33 +10,66 @@ module.exports = {
    * @returns {boolean}
    */
   validateModel: function(model, logger) {
-    assert(
-      model.schema,
-      "model not mongoose format. 'schema' property required."
-    )
-    assert(
-      model.schema.paths,
-      "model not mongoose format. 'schema.paths' property required."
-    )
-    assert(
-      model.schema.tree,
-      "model not mongoose format. 'schema.tree' property required."
-    )
-
-    const fields = model.schema.paths
-    const fieldNames = Object.keys(fields)
-
-    assert(
-      model.routeOptions,
-      "model not mongoose format. 'routeOptions' property required."
-    )
-
-    for (let i = 0; i < fieldNames.length; i++) {
-      const fieldName = fieldNames[i]
+    if (model.Schema) {
+      // Schema
       assert(
-        fields[fieldName].options,
-        "field not mongoose format. 'options' parameter required."
+        model.Schema,
+        "model not mongoose format. 'schema' property required."
       )
+      assert(
+        model.Schema.paths,
+        "model not mongoose format. 'schema.paths' property required."
+      )
+      assert(
+        model.Schema.tree,
+        "model not mongoose format. 'schema.tree' property required."
+      )
+
+      const fields = model.Schema.paths
+      const fieldNames = Object.keys(fields)
+
+      assert(
+        model.Schema.statics.routeOptions,
+        "model not mongoose format. 'routeOptions' property required."
+      )
+
+      for (let i = 0; i < fieldNames.length; i++) {
+        const fieldName = fieldNames[i]
+        assert(
+          fields[fieldName].options,
+          "field not mongoose format. 'options' parameter required."
+        )
+      }
+    } else {
+      // Model
+      assert(
+        model.schema,
+        "model not mongoose format. 'schema' property required."
+      )
+      assert(
+        model.schema.paths,
+        "model not mongoose format. 'schema.paths' property required."
+      )
+      assert(
+        model.schema.tree,
+        "model not mongoose format. 'schema.tree' property required."
+      )
+
+      const fields = model.schema.paths
+      const fieldNames = Object.keys(fields)
+
+      assert(
+        model.routeOptions,
+        "model not mongoose format. 'routeOptions' property required."
+      )
+
+      for (let i = 0; i < fieldNames.length; i++) {
+        const fieldName = fieldNames[i]
+        assert(
+          fields[fieldName].options,
+          "field not mongoose format. 'options' parameter required."
+        )
+      }
     }
 
     return true

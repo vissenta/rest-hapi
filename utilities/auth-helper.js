@@ -11,7 +11,7 @@ module.exports = {
    * @returns {Array}: A list of authorization scopes for the endpoint.
    */
   generateScopeForEndpoint: function(model, type, logger) {
-    const routeScope = model.routeOptions.routeScope || {}
+    const routeScope = model.Schema.statics.routeOptions.routeScope || {}
     const rootScope = routeScope.rootScope
     let scope = []
 

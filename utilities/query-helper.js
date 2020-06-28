@@ -155,7 +155,7 @@ module.exports = {
 
     const readableFields = []
 
-    const fields = model.schema.paths
+    const fields = model.Schema.paths
 
     for (const fieldName in fields) {
       const field = fields[fieldName].options
@@ -200,11 +200,11 @@ module.exports = {
 
     const queryableFields = []
 
-    const fields = model.schema.paths
+    const fields = model.Schema.paths
     const fieldNames = Object.keys(fields)
 
-    const associations = model.routeOptions
-      ? model.routeOptions.associations
+    const associations = model.Schema.statics.routeOptions
+      ? model.Schema.statics.routeOptions.associations
       : null
 
     for (let i = 0; i < fieldNames.length; i++) {

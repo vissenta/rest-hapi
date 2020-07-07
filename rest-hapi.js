@@ -82,9 +82,19 @@ async function register(server, options) {
 
   module.exports.logger = Log
 
+  const dbConnect = (defaultDbConfig = {}, request) => {
+    const dbConfig = options.config.mongo
+    extend(true, dbConfig, { name: 'default' }, defaultDbConfig)
+    
+    return mongooseInit(options.mongoose, Log, dbConfig, request)
+  }
   // Add the logger object to the request object for access later
   server.ext('onRequest', (request, h) => {
     request.logger = Log
+    request.connections = {}
+    request.models = {}
+    request.connect = (config) => dbConnect(config, request)
+    request.model = (name, connectionName) => getModel(name, connectionName, request)
 
     return h.continue
   })
@@ -96,12 +106,7 @@ async function register(server, options) {
   // const mongoose = mongooseInit(options.mongoose, Log, config)
 
   // Register mongoose connect method
-  server.method('dbConnect', (defaultDbConfig = {}) => {
-    const dbConfig = options.config.mongo
-    extend(true, dbConfig, { name: 'default' }, defaultDbConfig)
-
-    return mongooseInit(options.mongoose, Log, dbConfig)
-  })
+  server.method('dbConnect', dbConnect)
 
   logUtil.logActionStart(Log, 'Initializing Server')
 
@@ -178,12 +183,12 @@ function getLogger(label) {
   return rootLogger
 }
 
-function getConnection(name = 'default') {
+function getConnection(name = 'default', request) {
   let connection =
-    internals.globalConnections[exported.config.mongo.defaultConnection]
+    request.connections[exported.config.mongo.defaultConnection]
 
   if (name !== exported.config.mongo.defaultConnection) {
-    connection = internals.globalConnections[name]
+    connection = request.connections[name]
   }
 
   if (!connection || !connection.connection) {
@@ -198,18 +203,19 @@ function getConnection(name = 'default') {
 
 function getModel(
   name,
-  connectionName = exported.config.mongo.defaultConnection
+  connectionName = exported.config.mongo.defaultConnection,
+  request
 ) {
-  const model = spawnModel(name, connectionName)
+  const model = spawnModel(name, connectionName, request)
   if (connectionName === exported.config.mongo.defaultConnection) {
-    Object.assign(model, { with: conn => getModel(name, conn) })
+    Object.assign(model, { with: conn => getModel(name, conn, request) })
   }
 
   return model
 }
 
-function spawnModel(name, connectionName) {
-  const connection = getConnection(connectionName)
+function spawnModel(name, connectionName, request) {
+  const connection = getConnection(connectionName, request)
 
   if (!connection.models[name]) {
     connection.models[name] = connection.connection.model(
@@ -229,7 +235,7 @@ function spawnModel(name, connectionName) {
  * @param config
  * @returns {*}
  */
-async function mongooseInit(mongoose, logger, config) {
+async function mongooseInit(mongoose, logger, config, request) {
   const Log = logger.bind('mongoose-init')
 
   mongoose.Promise = Promise
@@ -249,17 +255,17 @@ async function mongooseInit(mongoose, logger, config) {
   )
 
   if (
-    internals.globalConnections[config.name] &&
-    internals.globalConnections[config.name].connection
+    request.connections[config.name] &&
+    request.connections[config.name].connection
   ) {
     Log.warn(
       `Connection ${chalk.yellow(config.name)} already exists. Skipping...`
     )
-    return internals.globalConnections[config.name]
+    return request.connections[config.name]
   }
 
   const connection = await mongoose.createConnection(config.URI, options)
-  internals.globalConnections[config.name] = {
+  request.connections[config.name] = {
     name: config.name,
     models: {},
     connection

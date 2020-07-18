@@ -555,6 +555,7 @@ module.exports = function(logger, mongoose, server) {
         method: 'POST',
         path: '/' + resourceAliasForRoute.toLowerCase(),
         config: {
+          pre: config.preRoute || [],
           handler: handler,
           auth: auth,
           cors: config.cors,
@@ -1050,15 +1051,14 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('AddOne'))
 
       assert(
-        ownerModel.routeOptions.associations,
+        ownerModel.Schema.statics.routeOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
 
       const associationName =
-        association.include.as || association.include.model.modelName
-      const ownerModelName =
-        ownerModel.collectionDisplayName || ownerModel.modelName
+        association.include.as || association.include.model.name
+      const ownerModelName = ownerModel.collectionDisplayName || ownerModel.name
       const childModel = association.include.model
 
       const childModelName =
@@ -1075,9 +1075,9 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
-      const childAlias =
-        association.alias || association.include.model.modelName
+      const ownerAlias =
+        ownerModel.Schema.statics.routeOptions.alias || ownerModel.name
+      const childAlias = association.alias || association.include.model.name
 
       const handler = HandlerHelper.generateAssociationAddOneHandler(
         ownerModel,
@@ -1106,7 +1106,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let addOneHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerModel.routeOptions.associateAuth === false) {
+      if (ownerModel.Schema.statics.routeOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "addAuth" instead.'
         )
@@ -1114,7 +1114,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerModel.routeOptions.associateAuth !== false &&
+        ownerModel.Schema.statics.routeOptions.associateAuth !== false &&
         association.addAuth !== false
       ) {
         auth = {
@@ -1157,8 +1157,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerModel.routeOptions.policies) {
-        policies = ownerModel.routeOptions.policies
+      if (ownerModel.Schema.statics.routeOptions.policies) {
+        policies = ownerModel.Schema.statics.routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1266,15 +1266,14 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('RemoveOne'))
 
       assert(
-        ownerrouteOptions.associations,
+        ownerModel.Schema.statics.routeOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
 
       const associationName =
-        association.include.as || association.include.model.modelName
-      const ownerModelName =
-        ownerModel.collectionDisplayName || ownerModel.modelName
+        association.include.as || association.include.model.name
+      const ownerModelName = ownerModel.collectionDisplayName || ownerModel.name
       const childModel = association.include.model
 
       const childModelName =
@@ -1291,9 +1290,9 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
-      const childAlias =
-        association.alias || association.include.model.modelName
+      const ownerAlias =
+        ownerModel.Schema.statics.routeOptions.alias || ownerModel.name
+      const childAlias = association.alias || association.include.model.name
 
       const handler = HandlerHelper.generateAssociationRemoveOneHandler(
         ownerModel,
@@ -1305,7 +1304,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let removeOneHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerrouteOptions.associateAuth === false) {
+      if (ownerModel.Schema.statics.routeOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "removeAuth" instead.'
         )
@@ -1313,7 +1312,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerrouteOptions.associateAuth !== false &&
+        ownerModel.Schema.statics.routeOptions.associateAuth !== false &&
         association.removeAuth !== false
       ) {
         auth = {
@@ -1356,8 +1355,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerrouteOptions.policies) {
-        policies = ownerrouteOptions.policies
+      if (ownerModel.Schema.statics.routeOptions.policies) {
+        policies = ownerModel.Schema.statics.routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1459,15 +1458,14 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('AddMany'))
 
       assert(
-        ownerrouteOptions.associations,
+        ownerModel.Schema.statics.routeOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
 
       const associationName =
-        association.include.as || association.include.model.modelName
-      const ownerModelName =
-        ownerModel.collectionDisplayName || ownerModel.modelName
+        association.include.as || association.include.model.name
+      const ownerModelName = ownerModel.collectionDisplayName || ownerModel.name
       const childModel = association.include.model
 
       const childModelName =
@@ -1484,9 +1482,9 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
-      const childAlias =
-        association.alias || association.include.model.modelName
+      const ownerAlias =
+        ownerModel.Schema.statics.routeOptions.alias || ownerModel.name
+      const childAlias = association.alias || association.include.model.name
 
       const handler = HandlerHelper.generateAssociationAddManyHandler(
         ownerModel,
@@ -1531,7 +1529,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let addManyHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerrouteOptions.associateAuth === false) {
+      if (ownerModel.Schema.statics.routeOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "addAuth" instead.'
         )
@@ -1539,7 +1537,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerrouteOptions.associateAuth !== false &&
+        ownerModel.Schema.statics.routeOptions.associateAuth !== false &&
         association.addAuth !== false
       ) {
         auth = {
@@ -1577,8 +1575,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerrouteOptions.policies) {
-        policies = ownerrouteOptions.policies
+      if (ownerModel.Schema.statics.routeOptions.policies) {
+        policies = ownerModel.Schema.statics.routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1677,15 +1675,14 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('RemoveMany'))
 
       assert(
-        ownerrouteOptions.associations,
+        ownerModel.Schema.statics.routeOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
 
       const associationName =
-        association.include.as || association.include.model.modelName
-      const ownerModelName =
-        ownerModel.collectionDisplayName || ownerModel.modelName
+        association.include.as || association.include.model.name
+      const ownerModelName = ownerModel.collectionDisplayName || ownerModel.name
       const childModel = association.include.model
 
       const childModelName =
@@ -1702,9 +1699,9 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
-      const childAlias =
-        association.alias || association.include.model.modelName
+      const ownerAlias =
+        ownerModel.Schema.statics.routeOptions.alias || ownerModel.name
+      const childAlias = association.alias || association.include.model.name
 
       const handler = HandlerHelper.generateAssociationRemoveManyHandler(
         ownerModel,
@@ -1727,7 +1724,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let removeManyHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerrouteOptions.associateAuth === false) {
+      if (ownerModel.Schema.statics.routeOptions.associateAuth === false) {
         Log.warn(
           '"associateAuth" property is deprecated, please use "removeAuth" instead.'
         )
@@ -1735,7 +1732,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerrouteOptions.associateAuth !== false &&
+        ownerModel.Schema.statics.routeOptions.associateAuth !== false &&
         association.removeAuth !== false
       ) {
         auth = {
@@ -1777,8 +1774,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerrouteOptions.policies) {
-        policies = ownerrouteOptions.policies
+      if (ownerModel.Schema.statics.routeOptions.policies) {
+        policies = ownerModel.Schema.statics.routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.associatePolicies || []
         )
@@ -1877,15 +1874,14 @@ module.exports = function(logger, mongoose, server) {
       const Log = logger.bind(chalk.yellow('GetAll'))
 
       assert(
-        ownerrouteOptions.associations,
+        ownerModel.Schema.statics.routeOptions.associations,
         'model associations must exist'
       )
       assert(association, 'association input must exist')
 
       const associationName =
-        association.include.as || association.include.model.modelName
-      const ownerModelName =
-        ownerModel.collectionDisplayName || ownerModel.modelName
+        association.include.as || association.include.model.name
+      const ownerModelName = ownerModel.collectionDisplayName || ownerModel.name
 
       if (config.logRoutes) {
         Log.note(
@@ -1898,9 +1894,9 @@ module.exports = function(logger, mongoose, server) {
 
       options = options || {}
 
-      const ownerAlias = ownerrouteOptions.alias || ownerModel.modelName
-      const childAlias =
-        association.alias || association.include.model.modelName
+      const ownerAlias =
+        ownerModel.Schema.statics.routeOptions.alias || ownerModel.name
+      const childAlias = association.alias || association.include.model.name
 
       const childModel = association.include.model
 
@@ -1943,7 +1939,7 @@ module.exports = function(logger, mongoose, server) {
       let auth = false
       let getAllHeadersValidation = Object.assign(headersValidation, {})
 
-      if (ownerrouteOptions.associateAuth === false) {
+      if (ownerModel.Schema.statics.routeOptions.associateAuth === false) {
         Log.warn(
           '"routeOptions.readAuth" property is deprecated for associations, please use "association.readAuth" instead.'
         )
@@ -1951,7 +1947,7 @@ module.exports = function(logger, mongoose, server) {
 
       if (
         config.authStrategy &&
-        ownerrouteOptions.readAuth !== false &&
+        ownerModel.Schema.statics.routeOptions.readAuth !== false &&
         association.readAuth !== false
       ) {
         auth = {
@@ -1985,8 +1981,8 @@ module.exports = function(logger, mongoose, server) {
 
       let policies = []
 
-      if (ownerrouteOptions.policies) {
-        policies = ownerrouteOptions.policies
+      if (ownerModel.Schema.statics.routeOptions.policies) {
+        policies = ownerModel.Schema.statics.routeOptions.policies
         policies = (policies.rootPolicies || []).concat(
           policies.readPolicies || []
         )

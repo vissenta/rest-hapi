@@ -139,11 +139,11 @@ function generateListHandler(schema, options, logger) {
 
   return async function(request, h) {
     try {
-      const args = [schema.Schema.statics.collectionName]
-      if (schema.Schema.statics.connectionName) {
-        args.push(schema.Schema.statics.connectionName)
-      }
-      const model = getModel(...args)
+      const model = getModel(
+        schema.Schema.statics.collectionName,
+        schema.Schema.statics?.connectionName || false,
+        request
+      )
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -173,11 +173,11 @@ function generateFindHandler(schema, options, logger) {
 
   return async function(request, h) {
     try {
-      const args = [schema.Schema.statics.collectionName]
-      if (schema.Schema.statics.connectionName) {
-        args.push(schema.Schema.statics.connectionName)
-      }
-      const model = getModel(...args)
+      const model = getModel(
+        schema.Schema.statics.collectionName,
+        schema.Schema.statics?.connectionName || false,
+        request
+      )
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -211,11 +211,11 @@ function generateCreateHandler(schema, options, logger) {
 
   return async function(request, h) {
     try {
-      const args = [schema.Schema.statics.collectionName]
-      if (schema.Schema.statics.connectionName) {
-        args.push(schema.Schema.statics.connectionName)
-      }
-      const model = getModel(...args)
+      const model = getModel(
+        schema.Schema.statics.collectionName,
+        schema.Schema.statics?.connectionName || false,
+        request
+      )
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -244,11 +244,11 @@ function generateUpdateHandler(schema, options, logger) {
 
   return async function(request, h) {
     try {
-      const args = [schema.Schema.statics.collectionName]
-      if (schema.Schema.statics.connectionName) {
-        args.push(schema.Schema.statics.connectionName)
-      }
-      const model = getModel(...args)
+      const model = getModel(
+        schema.Schema.statics.collectionName,
+        schema.Schema.statics?.connectionName || false,
+        request
+      )
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),
@@ -282,11 +282,11 @@ function generateDeleteHandler(schema, options, logger) {
 
   return async function(request, h) {
     try {
-      const args = [schema.Schema.statics.collectionName]
-      if (schema.Schema.statics.connectionName) {
-        args.push(schema.Schema.statics.connectionName)
-      }
-      const model = getModel(...args)
+      const model = getModel(
+        schema.Schema.statics.collectionName,
+        schema.Schema.statics?.connectionName || false,
+        request
+      )
       Log.log(
         'params(%s), query(%s), payload(%s)',
         JSON.stringify(request.params),

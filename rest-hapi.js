@@ -85,7 +85,7 @@ async function register(server, options) {
   const dbConnect = (defaultDbConfig = {}, request) => {
     const dbConfig = options.config.mongo
     extend(true, dbConfig, { name: 'default' }, defaultDbConfig)
-    
+
     return mongooseInit(options.mongoose, Log, dbConfig, request)
   }
   // Add the logger object to the request object for access later
@@ -93,8 +93,9 @@ async function register(server, options) {
     request.logger = Log
     request.connections = {}
     request.models = {}
-    request.connect = (config) => dbConnect(config, request)
-    request.model = (name, connectionName) => getModel(name, connectionName, request)
+    request.connect = config => dbConnect(config, request)
+    request.model = (name, connectionName) =>
+      getModel(name, connectionName, request)
 
     return h.continue
   })
@@ -184,8 +185,7 @@ function getLogger(label) {
 }
 
 function getConnection(name = 'default', request) {
-  let connection =
-    request.connections[exported.config.mongo.defaultConnection]
+  let connection = request.connections[exported.config.mongo.defaultConnection]
 
   if (name !== exported.config.mongo.defaultConnection) {
     connection = request.connections[name]
@@ -201,11 +201,10 @@ function getConnection(name = 'default', request) {
   return connection
 }
 
-function getModel(
-  name,
-  connectionName = exported.config.mongo.defaultConnection,
-  request
-) {
+function getModel(name, connectionName, request) {
+  if (!connectionName) {
+    connectionName = exported.config.mongo.defaultConnection
+  }
   const model = spawnModel(name, connectionName, request)
   if (connectionName === exported.config.mongo.defaultConnection) {
     Object.assign(model, { with: conn => getModel(name, conn, request) })

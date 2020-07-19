@@ -197,10 +197,11 @@ internals.generateJoiCreateModel = function(model, logger) {
 
   const createModelBase = {}
 
-  const fields = model.Schema.tree
+  const schema = model.schema || model.Schema
+  const fields = schema.tree
 
-  const associations = model.Schema.statics.routeOptions.associations
-    ? model.Schema.statics.routeOptions.associations
+  const associations = schema.statics.routeOptions?.associations
+    ? schema.statics.routeOptions.associations
     : {}
 
   for (const fieldName in fields) {
@@ -454,9 +455,11 @@ internals.generateJoiFieldModel = function(
   let fieldModel = {}
   let joiModelFunction = {}
 
-  const nested = model.Schema.nested
-  const instance = model.Schema.paths[fieldName]
-    ? model.Schema.paths[fieldName].instance
+  const schema = model.schema || model.Schema
+
+  const nested = schema.nested
+  const instance = schema.paths[fieldName]
+    ? schema.paths[fieldName].instance
     : null
 
   let isArray = false
@@ -507,8 +510,8 @@ internals.generateJoiFieldModel = function(
     }
 
     const nestedModel = {
-      name: model.Schema.modelName + '.' + fieldName,
-      modelName: model.Schema.modelName + '.' + fieldName,
+      name: schema.modelName + '.' + fieldName,
+      modelName: schema.modelName + '.' + fieldName,
       fakeModel: true,
       isArray: isArray,
       Schema: new mongoose.Schema(field)

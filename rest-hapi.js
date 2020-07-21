@@ -82,7 +82,26 @@ async function register(server, options) {
 
   module.exports.logger = Log
 
-  const dbConnect = (defaultDbConfig = {}, request) => {
+  const dbConnect = async (defaultDbConfig = {}, request) => {
+    if (defaultDbConfig.connection) {
+      const name = defaultDbConfig.name || 'default'
+
+      const logger = Log.bind('mongoose-init')
+      logUtil.logActionStart(
+        logger,
+        'Connecting to Database through previous connection'
+      )
+
+      const connection = await defaultDbConfig.connection
+      request.connections[name] = {
+        name,
+        models: {},
+        connection
+      }
+
+      return connection
+    }
+
     const dbConfig = options.config.mongo
     extend(true, dbConfig, { name: 'default' }, defaultDbConfig)
 

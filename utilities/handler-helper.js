@@ -1107,8 +1107,8 @@ async function _addOneV2({
     assertServer()
     credentials = defaultCreds(credentials)
 
-    const association = ownerModel.routeOptions.associations[associationName]
-    const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
+    const ownerAlias = ownerModel.Schema.statics.routeOptions.alias || ownerModel.modelName
     const childAlias = association.alias || association.include.model.modelName
 
     const request = {
@@ -1171,12 +1171,12 @@ async function _addOneHandler(
 
       try {
         if (
-          ownerModel.routeOptions &&
-          ownerModel.routeOptions.add &&
-          ownerModel.routeOptions.add[associationName] &&
-          ownerModel.routeOptions.add[associationName].pre
+          ownerModel.Schema.statics.routeOptions &&
+          ownerModel.Schema.statics.routeOptions.add &&
+          ownerModel.Schema.statics.routeOptions.add[associationName] &&
+          ownerModel.Schema.statics.routeOptions.add[associationName].pre
         ) {
-          payload = await ownerModel.routeOptions.add[associationName].pre(
+          payload = await ownerModel.Schema.statics.routeOptions.add[associationName].pre(
             payload,
             request,
             Log
@@ -1312,8 +1312,8 @@ async function _removeOneV2({
     assertServer()
     credentials = defaultCreds(credentials)
 
-    const association = ownerModel.routeOptions.associations[associationName]
-    const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
+    const ownerAlias = ownerModel.Schema.statics.routeOptions.alias || ownerModel.modelName
     const childAlias = association.alias || association.include.model.modelName
 
     const request = {
@@ -1368,12 +1368,12 @@ async function _removeOneHandler(
     if (ownerObject) {
       try {
         if (
-          ownerModel.routeOptions &&
-          ownerModel.routeOptions.remove &&
-          ownerModel.routeOptions.remove[associationName] &&
-          ownerModel.routeOptions.remove[associationName].pre
+          ownerModel.Schema.statics.routeOptions &&
+          ownerModel.Schema.statics.routeOptions.remove &&
+          ownerModel.Schema.statics.routeOptions.remove[associationName] &&
+          ownerModel.Schema.statics.routeOptions.remove[associationName].pre
         ) {
-          await ownerModel.routeOptions.remove[associationName].pre(
+          await ownerModel.Schema.statics.routeOptions.remove[associationName].pre(
             {},
             request,
             Log
@@ -1499,8 +1499,8 @@ async function _addManyV2({
     assertServer()
     credentials = defaultCreds(credentials)
 
-    const association = ownerModel.routeOptions.associations[associationName]
-    const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
+    const ownerAlias = ownerModel.Schema.statics.routeOptions.alias || ownerModel.modelName
     const childAlias = association.alias || association.include.model.modelName
 
     const request = {
@@ -1561,12 +1561,12 @@ async function _addManyHandler(
     if (ownerObject) {
       try {
         if (
-          ownerModel.routeOptions &&
-          ownerModel.routeOptions.add &&
-          ownerModel.routeOptions.add[associationName] &&
-          ownerModel.routeOptions.add[associationName].pre
+          ownerModel.Schema.statics.routeOptions &&
+          ownerModel.Schema.statics.routeOptions.add &&
+          ownerModel.Schema.statics.routeOptions.add[associationName] &&
+          ownerModel.Schema.statics.routeOptions.add[associationName].pre
         ) {
-          payload = await ownerModel.routeOptions.add[associationName].pre(
+          payload = await ownerModel.Schema.statics.routeOptions.add[associationName].pre(
             payload,
             request,
             Log
@@ -1710,8 +1710,8 @@ async function _removeManyV2({
     assertServer()
     credentials = defaultCreds(credentials)
 
-    const association = ownerModel.routeOptions.associations[associationName]
-    const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
+    const ownerAlias = ownerModel.Schema.statics.routeOptions.alias || ownerModel.modelName
     const childAlias = association.alias || association.include.model.modelName
 
     const request = {
@@ -1771,12 +1771,12 @@ async function _removeManyHandler(
     if (ownerObject) {
       try {
         if (
-          ownerModel.routeOptions &&
-          ownerModel.routeOptions.remove &&
-          ownerModel.routeOptions.remove[associationName] &&
-          ownerModel.routeOptions.remove[associationName].pre
+          ownerModel.Schema.statics.routeOptions &&
+          ownerModel.Schema.statics.routeOptions.remove &&
+          ownerModel.Schema.statics.routeOptions.remove[associationName] &&
+          ownerModel.Schema.statics.routeOptions.remove[associationName].pre
         ) {
-          payload = await ownerModel.routeOptions.remove[associationName].pre(
+          payload = await ownerModel.Schema.statics.routeOptions.remove[associationName].pre(
             payload,
             request,
             Log
@@ -1904,8 +1904,8 @@ async function _getAllV2({
     assertServer()
     credentials = defaultCreds(credentials)
 
-    const association = ownerModel.routeOptions.associations[associationName]
-    const ownerAlias = ownerModel.routeOptions.alias || ownerModel.modelName
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
+    const ownerAlias = ownerModel.Schema.statics.routeOptions.alias || ownerModel.modelName
     const childAlias = association.alias || association.include.model.modelName
 
     const request = {
@@ -1954,8 +1954,12 @@ async function _getAllHandler(
   try {
     const query = request.query
 
-    const association = ownerModel.routeOptions.associations[associationName]
+    // console.log({ ownerModel })
+
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
     const foreignField = association.foreignField
+
+    console.log({ association, foreignField })
 
     const ownerRequest = { query: {} }
     ownerRequest.query.$embed = associationName
@@ -1968,12 +1972,28 @@ async function _getAllHandler(
     // EXPL: In order to allow for fully querying against the association data, we first embed the
     // associations to get a list of _ids and extra fields. We then leverage _list
     // to perform the full query.  Finally the extra fields (if they exist) are added to the final result
-    let mongooseQuery = ownerModel.findOne({ _id: ownerId })
+
+    const modelArguments = [ownerModel.name]
+
+    if (ownerModel.Schema?.statics?.connectionName) {
+      modelArguments.push(ownerModel.Schema.statics.connectionName)
+    }
+
+    console.log('register model', ...modelArguments)
+    const model = request.model(...modelArguments)
+
+    let mongooseQuery = model.findOne({ _id: ownerId })
+
+    console.log({ ownerRequest })
+
+    request.model(association.model)
+
     mongooseQuery = QueryHelper.createMongooseQuery(
       ownerModel,
       ownerRequest.query,
       mongooseQuery,
-      Log
+      Log,
+      request
     )
     let result
     try {
@@ -2058,12 +2078,12 @@ async function _getAllHandler(
 
       try {
         if (
-          ownerModel.routeOptions &&
-          ownerModel.routeOptions.getAll &&
-          ownerModel.routeOptions.getAll[associationName] &&
-          ownerModel.routeOptions.getAll[associationName].post
+          ownerModel.Schema.statics.routeOptions &&
+          ownerModel.Schema.statics.routeOptions.getAll &&
+          ownerModel.Schema.statics.routeOptions.getAll[associationName] &&
+          ownerModel.Schema.statics.routeOptions.getAll[associationName].post
         ) {
-          listResult.docs = await ownerModel.routeOptions.getAll[
+          listResult.docs = await ownerModel.Schema.statics.routeOptions.getAll[
             associationName
           ].post(request, result.docs, Log)
         }
@@ -2108,7 +2128,7 @@ async function _setAssociation(
 ) {
   const childObject = await childModel.findOne({ _id: childId })
   if (childObject) {
-    const association = ownerModel.routeOptions.associations[associationName]
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
     let extraFields = false
     if (association.type === 'ONE_MANY') {
       // EXPL: one-many associations are virtual, so only update the child reference
@@ -2294,7 +2314,7 @@ async function _removeAssociation(
 ) {
   const childObject = await childModel.findOne({ _id: childId })
   if (childObject) {
-    const association = ownerModel.routeOptions.associations[associationName]
+    const association = ownerModel.Schema.statics.routeOptions.associations[associationName]
     const associationType = association.type
     if (associationType === 'ONE_MANY') {
       // EXPL: one-many associations are virtual, so only update the child reference

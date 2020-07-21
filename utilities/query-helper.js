@@ -38,7 +38,7 @@ module.exports = {
    * @param logger: A logging object.
    * @returns {*}: A modified mongoose query.
    */
-  createMongooseQuery: function(model, query, mongooseQuery, logger) {
+  createMongooseQuery: function(model, query, mongooseQuery, logger, request) {
     // This line has to come first
     validationHelper.validateModel(model, logger)
     const Log = logger.bind()
@@ -85,13 +85,16 @@ module.exports = {
       attributesFilter = '_id'
     }
 
+    const schema = model.Schema || model.schema
+
     const result = this.populateEmbeddedDocs(
       query,
       mongooseQuery,
       attributesFilter,
-      model.routeOptions.associations,
+      schema.statics.routeOptions.associations,
       model,
-      Log
+      Log,
+      request
     )
     mongooseQuery = result.mongooseQuery
     attributesFilter = result.attributesFilter
@@ -394,7 +397,8 @@ module.exports = {
     attributesFilter,
     associations,
     model,
-    logger
+    logger,
+    request
   ) {
     const Log = logger.bind()
     if (query.$embed) {
@@ -414,6 +418,10 @@ module.exports = {
           model,
           Log
         )
+
+        Object.assign(populate, {
+          model: request.model(populate.model)
+        })
 
         mongooseQuery.populate(populate)
 
@@ -455,7 +463,10 @@ module.exports = {
     validationHelper.validateModel(model, logger)
 
     const attributesFilter = []
-    const fields = model.schema.paths
+
+    const schema = model.Schema || model.schema
+
+    const fields = schema.paths
     let fieldNames = []
 
     if (query.$select) {
@@ -467,8 +478,8 @@ module.exports = {
       fieldNames = Object.keys(fields)
     }
 
-    const associations = model.routeOptions
-      ? model.routeOptions.associations
+    const associations = schema.statics.routeOptions
+      ? schema.statics.routeOptions.associations
       : null
 
     for (let i = 0; i < fieldNames.length; i++) {
@@ -640,6 +651,7 @@ function getReference(model, embed, logger) {
   while (_.isArray(property)) {
     property = property[0]
   }
+  console.log('getReference', { model, embed })
   if (property && property.ref) {
     return {
       model: property.ref,

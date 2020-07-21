@@ -230,12 +230,7 @@ function getModel(name, connectionName, request) {
       connectionName = exported.config.mongo.defaultConnection
     }
   }
-  const model = spawnModel(name, connectionName, request)
-  if (connectionName === exported.config.mongo.defaultConnection) {
-    Object.assign(model, { with: conn => getModel(name, conn, request) })
-  }
-
-  return model
+  return spawnModel(name, connectionName, request)
 }
 
 function spawnModel(name, connectionName, request) {

@@ -1,7 +1,8 @@
 ---
-id: route-customization
+id: version-2.2.x-route-customization
 title: Route Customization
 sidebar_label: Route Customization
+original_id: route-customization
 ---
 
 ## Custom path names

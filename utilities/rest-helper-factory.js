@@ -52,7 +52,9 @@ module.exports = function(logger, mongoose, server) {
         const { routeOptions } = model.Schema.statics
 
         if (routeOptions.allowRead !== false) {
-          this.generateListEndpoint(server, model, options, Log)
+          if (routeOptions.allowList !== false) {
+            this.generateListEndpoint(server, model, options, Log)
+          }
           this.generateFindEndpoint(server, model, options, Log)
         }
 

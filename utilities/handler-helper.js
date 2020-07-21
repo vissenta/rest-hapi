@@ -130,6 +130,9 @@ async function _listV2({ model, query, Log, restCall = false, credentials }) {
  */
 async function _listHandler(model, request, Log) {
   try {
+    if (typeof model !== 'function') {
+      model = request.model(model.name)
+    }
     let query = Object.assign({}, request.query)
     try {
       if (

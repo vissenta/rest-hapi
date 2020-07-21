@@ -42,7 +42,8 @@ module.exports = function(logger, mongoose, server) {
       try {
         validationHelper.validateModel(model, logger)
 
-        const collectionName = model.collectionDisplayName || model.modelName
+        const collectionName =
+          model.collectionDisplayName || model.modelName || model.name
 
         const Log = logger.bind(chalk.blue(collectionName))
 

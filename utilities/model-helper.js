@@ -379,7 +379,6 @@ internals.extendSchemaAssociations = function(Schema, mongoose, modelPath) {
  */
 // TODO: can probably simplify this to a model string/name reference since mongoose models can be accessed globally
 internals.associateModels = function(Schema, models) {
-  console.log()
   if (Schema.statics.routeOptions) {
     for (const associationKey in Schema.statics.routeOptions.associations) {
       const association =

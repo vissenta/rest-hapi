@@ -222,7 +222,13 @@ function getConnection(name = 'default', request) {
 
 function getModel(name, connectionName, request) {
   if (!connectionName) {
-    connectionName = exported.config.mongo.defaultConnection
+    const schema = internals.globalSchemas[name].Schema
+    const schemaConnection = schema?.statics?.connectionName
+    if (schemaConnection) {
+      connectionName = schemaConnection
+    } else {
+      connectionName = exported.config.mongo.defaultConnection
+    }
   }
   const model = spawnModel(name, connectionName, request)
   if (connectionName === exported.config.mongo.defaultConnection) {

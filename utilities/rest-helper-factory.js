@@ -216,6 +216,26 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.enforceDocumentScopePost(model, Log))
       }
 
+      let additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.list) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.list(Joi)
+          )
+        }
+      }
+
+      if (Object.keys(additionalParams).length === 0) {
+        additionalParams = null
+      }
+
       server.route({
         method: 'GET',
         path: '/' + resourceAliasForRoute.toLowerCase(),
@@ -228,6 +248,7 @@ module.exports = function(logger, mongoose, server) {
           cors: config.cors,
           validate: {
             query: queryModel,
+            params: additionalParams,
             headers: listHeadersValidation
           },
           plugins: {
@@ -350,6 +371,22 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.enforceDocumentScopePost(model, Log))
       }
 
+      const additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.find) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.find(Joi)
+          )
+        }
+      }
+
       server.route({
         method: 'GET',
         path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
@@ -362,7 +399,8 @@ module.exports = function(logger, mongoose, server) {
           validate: {
             query: queryModel,
             params: {
-              _id: Joi.objectId().required()
+              _id: Joi.objectId().required(),
+              ...additionalParams
             },
             headers: findHeadersValidation
           },
@@ -554,6 +592,26 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.logCreate(mongoose, model, Log))
       }
 
+      let additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.create) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.create(Joi)
+          )
+        }
+      }
+
+      if (Object.keys(additionalParams).length === 0) {
+        additionalParams = null
+      }
+
       server.route({
         method: 'POST',
         path: '/' + resourceAliasForRoute.toLowerCase(),
@@ -566,6 +624,7 @@ module.exports = function(logger, mongoose, server) {
           tags: ['api', collectionName],
           validate: {
             payload: createModel,
+            params: additionalParams,
             headers: createHeadersValidation
           },
           plugins: {
@@ -684,6 +743,22 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.logDelete(mongoose, model, Log))
       }
 
+      const additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.delete) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.delete(Joi)
+          )
+        }
+      }
+
       server.route({
         method: 'DELETE',
         path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
@@ -695,7 +770,8 @@ module.exports = function(logger, mongoose, server) {
           tags: ['api', collectionName],
           validate: {
             params: {
-              _id: Joi.objectId().required()
+              _id: Joi.objectId().required(),
+              ...additionalParams
             },
             payload: payloadModel,
             headers: deleteOneHeadersValidation
@@ -829,6 +905,26 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.logDelete(mongoose, model, Log))
       }
 
+      let additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.delete) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.delete(Joi)
+          )
+        }
+      }
+
+      if (Object.keys(additionalParams).length === 0) {
+        additionalParams = null
+      }
+
       server.route({
         method: 'DELETE',
         path: '/' + resourceAliasForRoute.toLowerCase(),
@@ -840,6 +936,7 @@ module.exports = function(logger, mongoose, server) {
           tags: ['api', collectionName],
           validate: {
             payload: payloadModel,
+            params: additionalParams,
             headers: deleteManyHeadersValidation
           },
           plugins: {
@@ -983,6 +1080,22 @@ module.exports = function(logger, mongoose, server) {
         policies.push(restHapiPolicies.logUpdate(mongoose, model, Log))
       }
 
+      const additionalParams = {}
+      if (routeOptions.additionalParams) {
+        if (routeOptions.additionalParams.all) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.all(Joi)
+          )
+        }
+        if (routeOptions.additionalParams.update) {
+          Object.assign(
+            additionalParams,
+            routeOptions.additionalParams.update(Joi)
+          )
+        }
+      }
+
       server.route({
         method: 'PUT',
         path: '/' + resourceAliasForRoute.toLowerCase() + '/{_id}',
@@ -994,7 +1107,8 @@ module.exports = function(logger, mongoose, server) {
           tags: ['api', collectionName],
           validate: {
             params: {
-              _id: Joi.objectId().required()
+              _id: Joi.objectId().required(),
+              ...additionalParams
             },
             payload: updateModel,
             headers: updateHeadersValidation
